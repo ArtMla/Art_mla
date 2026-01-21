@@ -1,5 +1,11 @@
 # Art_mla Portfolio
 
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://davis-portfolio-beta.vercel.app/)
+[![React](https://img.shields.io/badge/React-18.x-blue)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC)](https://tailwindcss.com/)
 A modern, responsive portfolio website built with React and Vite, showcasing my work and projects.
 
 ## 🚀 Demo
