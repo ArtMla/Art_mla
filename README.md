@@ -90,7 +90,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Original template forked from [omari91/artmla-portfolio](https://github.com/omari91/artmla-portfolio)
+- Original template forked from [omari91/davis-portfolio](https://github.com/omari91/davis-portfolio)
 - Built with [Vite](https://vitejs.dev/)
 - Styled with [Tailwind CSS](https://tailwindcss.com/)
 
