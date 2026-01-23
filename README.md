@@ -2,7 +2,7 @@
 
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://davis-portfolio-beta.vercel.app/)
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black)](https://artmla-portfolio-beta.vercel.app/)
 [![React](https://img.shields.io/badge/React-18.x-blue)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC)](https://tailwindcss.com/)
@@ -10,7 +10,7 @@ A modern, responsive portfolio website built with React and Vite, showcasing my 
 
 ## 🚀 Demo
 
-View the live site: [davis-portfolio-beta.vercel.app](https://davis-portfolio-beta.vercel.app/)
+View the live site: [artmla-portfolio-beta.vercel.app](https://artmla-portfolio-beta.vercel.app/)
 
 ## ✨ Features
 
@@ -86,7 +86,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **ArtMla**
 
 - GitHub: [@ArtMla](https://github.com/ArtMla)
-- Portfolio: [davis-portfolio-beta.vercel.app](https://davis-portfolio-beta.vercel.app/)
+- Portfolio: [artmla-portfolio-beta.vercel.app](https://artmla-portfolio-beta.vercel.app/)
 
 ## 🙏 Acknowledgments
 
