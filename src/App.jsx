@@ -682,22 +682,22 @@ function HomePage({ t }) {
 
   return (
     <>
-      <section className="relative min-h-screen flex items-center bg-slate-900 pt-20 overflow-hidden">
+      <section className="relative min-h-screen flex items-center bg-transparent pt-20 overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${personalInfo.heroBgPath})` }}>
-          <div className="absolute inset-0 bg-slate-950/55 backdrop-brightness-90" />
+          <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px]" />
         </div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <h1 className="text-5xl md:text-7xl font-black text-black leading-tight mb-6">{t.heroTitle} <span className="text-blue-700">{t.heroAccent}</span></h1>
-            <p className="text-xl text-black mb-10">{t.heroText}</p>
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-6">{t.heroTitle} <span className="text-blue-700">{t.heroAccent}</span></h1>
+            <p className="text-xl text-slate-700 mb-10">{t.heroText}</p>
             <div className="flex gap-4 flex-wrap">
               <button onClick={() => navigate('/projects')} className="px-8 py-4 bg-white text-slate-900 font-bold rounded flex items-center">{t.viewProjects} <Icon icon={ArrowRight} className="ml-2 text-slate-900" /></button>
-              <button onClick={() => navigate('/contact')} className="px-8 py-4 border border-slate-800 bg-white text-black font-bold rounded">{t.getInTouch}</button>
+              <button onClick={() => navigate('/contact')} className="px-8 py-4 border border-slate-200 bg-white text-slate-900 font-bold rounded">{t.getInTouch}</button>
             </div>
-            <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8 mt-10">
+            <div className="grid grid-cols-3 gap-6 border-t border-slate-200 pt-8 mt-10">
               {t.heroMetrics.map((metric, idx) => (
                 <div key={metric.label}>
-                  <p className="text-2xl md:text-3xl font-black text-white mb-1">
+                  <p className="text-2xl md:text-3xl font-black text-slate-900 mb-1">
                     {counts[idx]}
                     {metric.suffix}
                   </p>

@@ -1,16 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500,650,750&family=Manrope:wght@400..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   color-scheme: light;
-  --liquid-border: rgba(255, 255, 255, 0.48);
-  --liquid-surface: rgba(255, 255, 255, 0.38);
-  --liquid-surface-strong: rgba(255, 255, 255, 0.56);
-  --liquid-text: #102038;
-  --liquid-muted: #4c6280;
-  --liquid-accent: #2e7cf6;
-  --liquid-accent-strong: #0f4db8;
+  --liquid-border: rgba(18, 24, 38, 0.08);
+  --liquid-surface: rgba(255, 255, 255, 0.62);
+  --liquid-surface-strong: rgba(255, 255, 255, 0.78);
+  --liquid-text: #0b1220;
+  --liquid-muted: #4b5a73;
+  --liquid-accent: #0ea5a0;
+  --liquid-accent-strong: #0b4b46;
+  --liquid-bg: #fbf7ef;
 }
 
 html {
@@ -20,12 +23,13 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: "SF Pro Display", "SF Pro Text", "Segoe UI", sans-serif;
+  font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--liquid-text);
   background:
-    radial-gradient(circle at 8% 10%, rgba(126, 172, 255, 0.35), transparent 42%),
-    radial-gradient(circle at 92% 5%, rgba(190, 221, 255, 0.45), transparent 36%),
-    linear-gradient(160deg, #edf4ff 0%, #e8f1ff 45%, #f7fbff 100%);
+    radial-gradient(circle at 14% 12%, rgba(14, 165, 160, 0.16), transparent 42%),
+    radial-gradient(circle at 88% 6%, rgba(11, 75, 70, 0.10), transparent 34%),
+    radial-gradient(circle at 74% 78%, rgba(14, 165, 160, 0.10), transparent 44%),
+    linear-gradient(165deg, var(--liquid-bg) 0%, #f6f1e7 45%, #ffffff 100%);
 }
 
 #root {
@@ -54,19 +58,19 @@ body {
 .liquid-shell::before {
   top: -8rem;
   left: -5rem;
-  background: rgba(87, 155, 255, 0.35);
+  background: rgba(14, 165, 160, 0.18);
 }
 
 .liquid-shell::after {
   bottom: -10rem;
   right: -8rem;
-  background: rgba(151, 210, 255, 0.38);
+  background: rgba(11, 75, 70, 0.12);
 }
 
 .liquid-nav {
-  background: rgba(255, 255, 255, 0.44);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.58);
-  box-shadow: 0 8px 26px rgba(20, 46, 86, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(18, 24, 38, 0.08);
+  box-shadow: 0 10px 30px rgba(11, 18, 32, 0.10);
   backdrop-filter: blur(20px) saturate(150%);
 }
 
@@ -75,7 +79,7 @@ body {
 .liquid-shell .bg-slate-100 {
   background: var(--liquid-surface) !important;
   border-color: var(--liquid-border) !important;
-  box-shadow: 0 10px 36px rgba(18, 44, 86, 0.08);
+  box-shadow: 0 12px 34px rgba(11, 18, 32, 0.08);
   backdrop-filter: blur(22px) saturate(145%);
 }
 
@@ -83,7 +87,7 @@ body {
 .liquid-shell .bg-slate-950 {
   background: linear-gradient(145deg, rgba(235, 245, 255, 0.92), rgba(220, 237, 255, 0.86)) !important;
   border-color: rgba(255, 255, 255, 0.7) !important;
-  box-shadow: 0 10px 32px rgba(26, 67, 132, 0.12);
+  box-shadow: 0 14px 34px rgba(11, 18, 32, 0.10);
   backdrop-filter: blur(18px) saturate(140%);
 }
 
@@ -95,7 +99,7 @@ body {
 .liquid-shell .text-white,
 .liquid-shell .text-slate-100,
 .liquid-shell .text-slate-200 {
-  color: var(--liquid-accent-strong) !important;
+  color: var(--liquid-text) !important;
 }
 
 .liquid-shell .text-slate-300 {
@@ -123,7 +127,7 @@ body {
 .liquid-shell .bg-blue-700,
 .liquid-shell .bg-blue-600,
 .liquid-shell .bg-blue-500 {
-  background: linear-gradient(135deg, #49a2ff, #246df6) !important;
+  background: linear-gradient(135deg, rgba(14, 165, 160, 0.95), rgba(11, 75, 70, 0.95)) !important;
 }
 
 .liquid-shell input,
@@ -136,12 +140,7 @@ body {
 
 .liquid-shell button,
 .liquid-shell a {
-  transition: transform 180ms ease, box-shadow 220ms ease, background-color 220ms ease;
-}
-
-.liquid-shell button:hover,
-.liquid-shell a:hover {
-  transform: translateY(-1px);
+  transition: box-shadow 220ms ease, background-color 220ms ease, border-color 220ms ease, color 220ms ease;
 }
 
 .liquid-shell h1,
@@ -151,6 +150,11 @@ body {
   color: var(--liquid-text);
   letter-spacing: -0.018em;
   text-wrap: balance;
+}
+
+.liquid-shell h1 {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  letter-spacing: -0.03em;
 }
 
 .liquid-shell p,
