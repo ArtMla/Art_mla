@@ -9,36 +9,25 @@ import {
   Linkedin,
   Github,
   Twitter,
-  Terminal,
-  Cpu,
-  Database,
-  Layers,
-  Zap,
-  ShieldCheck,
-  Trophy,
-  ClipboardList,
-  Activity,
-  Link2,
-  BarChart3,
-  Truck,
-  Briefcase,
   CheckCircle2,
   Copy,
   Check,
+  ClipboardList,
+  BarChart3,
+  Trophy,
+  Activity,
+  ShieldCheck,
+  Link2,
 } from 'lucide-react';
 import { HashRouter, Link, NavLink, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Icon from './components/Icon';
+import ErrorBoundary from './components/ErrorBoundary';
+import { PageWrap, SectionHeader, ResponsiveImage, ContactLink } from './components/SharedComponents';
 
-const personalInfo = {
-  name: 'Arthur Mlambo',
-  email: 'arthurmlambo@gmail.com',
-  github: 'artmla',
-  linkedin: 'art-mla',
-  twitter: 'art_mla',
-  imagePath: 'assests/dumi.jpg',
-  cvPath: 'assests/Arthur_Mlambo_CV.pdf',
-  heroBgPath: 'assests/hero-bg.png',
-};
+// Configuration imports
+import { personalInfo } from './config/personalInfo';
+import { techStack } from './config/techStack';
+import { projectsData } from './config/projects';
 
 const content = {
   en: {
@@ -365,232 +354,10 @@ const content = {
   },
 };
 
-const techStack = [
-  { icon: Terminal, title: 'Programming', skills: ['Python', 'SQL', 'Matlab', 'Arduino'] },
-  { icon: Cpu, title: 'AI & ML', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'XGBoost'] },
-  { icon: Layers, title: 'Analytics', skills: ['Pandas', 'NumPy', 'Power BI', 'Seaborn'] },
-  { icon: Database, title: 'Infrastructure', skills: ['AWS', 'Azure', 'Docker', 'Git'] },
-  { icon: Zap, title: 'Specialized', skills: ['PVsyst', 'Solar Design', 'ERP', 'Blender'] },
-];
+// Tech stack is now imported from config
+// Project data is now imported from config
 
-const projectsData = [
-  {
-    id: 1,
-    icon: Zap,
-    category: 'Energy',
-    title: { en: 'Solar Output Prediction', de: 'Solar Output Prediction' },
-    short: { en: 'Hybrid Physics + ML model', de: 'Hybridmodell aus Physik + ML' },
-    challenge: {
-      en: 'Weather-only models were too weak for local PV planning.',
-      de: 'Wettermodelle allein waren für lokale PV-Planung zu schwach.',
-    },
-    action: {
-      en: 'Built a stacked ensemble with physics-informed feature constraints.',
-      de: 'Ein Stacked-Ensemble mit physikbasierten Feature-Constraints umgesetzt.',
-    },
-    result: {
-      en: 'Forecast accuracy improved by 15% with lower balancing uncertainty.',
-      de: 'Prognosegenauigkeit um 15% verbessert und Bilanzierungsunsicherheit reduziert.',
-    },
-    metrics: {
-      en: [
-        { label: 'Accuracy Lift', value: '+15%' },
-        { label: 'Forecast Horizon', value: '48h' },
-        { label: 'Deployment', value: 'AWS' },
-      ],
-      de: [
-        { label: 'Genauigkeitsplus', value: '+15%' },
-        { label: 'Prognosehorizont', value: '48h' },
-        { label: 'Deployment', value: 'AWS' },
-      ],
-    },
-    phases: {
-      en: ['Data audit and weather reveal', 'Physics-informed feature engineering', 'Stacked ensemble training and validation'],
-      de: ['Datenaudit und Wetteranalyse', 'Physikbasiertes Feature Engineering', 'Stacked-Ensemble Training und Validierung'],
-    },
-    gallery: {
-      en: [
-        {
-          title: 'Solar systems and energy context',
-          url: 'https://picsum.photos/seed/solar-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Renewable delivery operations',
-          url: 'https://picsum.photos/seed/solar-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Data infrastructure in production',
-          url: 'https://picsum.photos/seed/solar-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-      de: [
-        {
-          title: 'Solar- und Energiekontext',
-          url: 'https://picsum.photos/seed/solar-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Erneuerbare Logistikoperationen',
-          url: 'https://picsum.photos/seed/solar-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Dateninfrastruktur in Produktion',
-          url: 'https://picsum.photos/seed/solar-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-    },
-    stack: ['Python', 'XGBoost', 'TensorFlow', 'AWS'],
-  },
-  {
-    id: 2,
-    icon: Truck,
-    category: 'Logistics',
-    title: { en: 'Fleet Predictive Maintenance', de: 'Fleet Predictive Maintenance' },
-    short: { en: 'Telematics analytics + KPI dashboarding', de: 'Telematik-Analytics + KPI-Dashboards' },
-    challenge: {
-      en: 'Unplanned truck downtime increased operating cost.',
-      de: 'Ungeplante LKW-Ausfallzeiten erhöhten die Betriebskosten.',
-    },
-    action: {
-      en: 'Built ETL and predictive KPI flows for maintenance and route efficiency.',
-      de: 'ETL- und KPI-Flows für Wartung und Routeneffizienz aufgebaut.',
-    },
-    result: {
-      en: 'Enabled real-time visibility and reduced maintenance overhead by 10%.',
-      de: 'Echtzeit-Transparenz ermöglicht und Wartungsaufwand um 10% reduziert.',
-    },
-    metrics: {
-      en: [
-        { label: 'Maintenance Cost', value: '-10%' },
-        { label: 'Data Sources', value: '6+' },
-        { label: 'Reporting', value: 'Realtime' },
-      ],
-      de: [
-        { label: 'Wartungskosten', value: '-10%' },
-        { label: 'Datenquellen', value: '6+' },
-        { label: 'Reporting', value: 'Echtzeit' },
-      ],
-    },
-    phases: {
-      en: ['Telemetry ingestion and ETL', 'KPI design with ops team', 'Dashboard rollout and maintenance alerts'],
-      de: ['Telemetrie-Ingestion und ETL', 'KPI-Design mit Operations-Team', 'Dashboard-Rollout und Wartungs-Alerts'],
-    },
-    gallery: {
-      en: [
-        {
-          title: 'Fleet transport environment',
-          url: 'https://picsum.photos/seed/fleet-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Operations traffic context',
-          url: 'https://picsum.photos/seed/fleet-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Ground handling and logistics',
-          url: 'https://picsum.photos/seed/fleet-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-      de: [
-        {
-          title: 'Flotten-Transportumfeld',
-          url: 'https://picsum.photos/seed/fleet-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Operations- und Verkehrskontext',
-          url: 'https://picsum.photos/seed/fleet-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Ground-Handling und Logistik',
-          url: 'https://picsum.photos/seed/fleet-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-    },
-    stack: ['SQL', 'Python', 'Tableau', 'Airflow'],
-  },
-  {
-    id: 3,
-    icon: Cpu,
-    category: 'Computer Vision',
-    title: { en: 'Industrial Defect Detection', de: 'Industrial Defect Detection' },
-    short: { en: 'ResNet pipeline for quality control', de: 'ResNet-Pipeline für Qualitätskontrolle' },
-    challenge: {
-      en: 'Manual inspection was slow and inconsistent.',
-      de: 'Manuelle Inspektion war langsam und inkonsistent.',
-    },
-    action: {
-      en: 'Fine-tuned a ResNet model on infrared images for defect detection.',
-      de: 'ResNet-Modell auf Infrarotbildern für Defekterkennung feinjustiert.',
-    },
-    result: {
-      en: 'Reached 98% detection accuracy and automated the QC process.',
-      de: '98% Erkennungsgenauigkeit erreicht und QC-Prozess automatisiert.',
-    },
-    metrics: {
-      en: [
-        { label: 'Detection Accuracy', value: '98%' },
-        { label: 'Model Family', value: 'ResNet' },
-        { label: 'Serving', value: 'FastAPI' },
-      ],
-      de: [
-        { label: 'Erkennungsgenauigkeit', value: '98%' },
-        { label: 'Modellfamilie', value: 'ResNet' },
-        { label: 'Serving', value: 'FastAPI' },
-      ],
-    },
-    phases: {
-      en: ['Image labeling and augmentation', 'Model fine-tuning and thresholding', 'Containerized inference API'],
-      de: ['Bildannotation und Augmentation', 'Modell-Finetuning und Schwellwertoptimierung', 'Containerisierte Inferenz-API'],
-    },
-    gallery: {
-      en: [
-        {
-          title: 'Factory inspection context',
-          url: 'https://picsum.photos/seed/cv-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Automated machinery operations',
-          url: 'https://picsum.photos/seed/cv-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Industrial production environment',
-          url: 'https://picsum.photos/seed/cv-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-      de: [
-        {
-          title: 'Inspektionskontext in der Fabrik',
-          url: 'https://picsum.photos/seed/cv-context-1/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Automatisierte Maschinenprozesse',
-          url: 'https://picsum.photos/seed/cv-context-2/1200/800',
-          source: 'https://picsum.photos/',
-        },
-        {
-          title: 'Industrielles Produktionsumfeld',
-          url: 'https://picsum.photos/seed/cv-context-3/1200/800',
-          source: 'https://picsum.photos/',
-        },
-      ],
-    },
-    stack: ['PyTorch', 'OpenCV', 'Docker', 'FastAPI'],
-  },
-];
+// Project data is now imported from config/projects.js
 
 const privacyPolicySections = {
   en: [
@@ -659,6 +426,13 @@ function Nav({ t, lang, setLang }) {
   );
 }
 
+/**
+ * HomePage Component
+ * Landing page showcasing hero section, metrics, and tech stack
+ * Includes animated counter for metrics
+ * @param {Object} props - Component props
+ * @param {Object} props.t - Translation object
+ */
 function HomePage({ t }) {
   const navigate = useNavigate();
   const [counts, setCounts] = useState(t.heroMetrics.map(() => 0));
@@ -708,7 +482,12 @@ function HomePage({ t }) {
           </div>
           <div className="hidden md:block">
             <div className="aspect-[4/5] bg-slate-800 rounded-2xl border border-white/10 overflow-hidden">
-              <img src={personalInfo.imagePath} alt={personalInfo.name} className="w-full h-full object-cover" />
+              <ResponsiveImage
+                src={personalInfo.imagePath}
+                alt={`${personalInfo.name} - Portfolio photo`}
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
             </div>
           </div>
         </div>
@@ -732,16 +511,12 @@ function HomePage({ t }) {
   );
 }
 
-const PageWrap = ({ title, subtitle, children }) => (
-  <section className="pt-36 pb-24 bg-white min-h-[80vh]">
-    <div className="max-w-6xl mx-auto px-4">
-      <h2 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{title}</h2>
-      <p className="text-slate-600 mb-10 max-w-2xl">{subtitle}</p>
-      {children}
-    </div>
-  </section>
-);
-
+/**
+ * AboutPage Component
+ * Displays professional background, approach, experience timeline
+ * @param {Object} props - Component props
+ * @param {Object} props.t - Translation object
+ */
 function AboutPage({ t }) {
   return (
     <PageWrap title={t.aboutTitle} subtitle={t.aboutSub}>
@@ -799,6 +574,15 @@ function AboutPage({ t }) {
   );
 }
 
+/**
+ * ProjectModal Component
+ * Modal for displaying project details
+ * @param {Object} props - Component props
+ * @param {Object} props.project - Project data object
+ * @param {string} props.lang - Current language
+ * @param {Object} props.t - Translation object
+ * @param {Function} props.onClose - Callback to close modal
+ */
 function ProjectModal({ project, lang, t, onClose }) {
   if (!project) return null;
   return (
@@ -838,6 +622,13 @@ function ProjectModal({ project, lang, t, onClose }) {
   );
 }
 
+/**
+ * ProjectsPage Component
+ * Displays all project case studies with grid layout
+ * @param {Object} props - Component props
+ * @param {Object} props.t - Translation object
+ * @param {string} props.lang - Current language
+ */
 function ProjectsPage({ t, lang }) {
   return (
     <PageWrap title={t.projectsTitle} subtitle={t.projectsSub}>
@@ -877,6 +668,13 @@ function ProjectsPage({ t, lang }) {
   );
 }
 
+/**
+ * ProjectDetailPage Component
+ * Detailed case study view for a single project
+ * @param {Object} props - Component props
+ * @param {Object} props.t - Translation object
+ * @param {string} props.lang - Current language
+ */
 function ProjectDetailPage({ t, lang }) {
   const { id } = useParams();
   const project = projectsData.find((item) => String(item.id) === String(id));
@@ -946,14 +744,10 @@ function ProjectDetailPage({ t, lang }) {
             {project.gallery[lang].map((item, idx) => (
               <div key={item.title} className="rounded-xl border border-slate-200 overflow-hidden bg-white">
                 <div className="h-24 bg-slate-100">
-                  <img
+                  <ResponsiveImage
                     src={item.url}
                     alt={item.title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
                   />
                 </div>
                 <div className="p-3">
@@ -993,6 +787,13 @@ function ProjectDetailPage({ t, lang }) {
   );
 }
 
+/**
+ * ContactPage Component
+ * Contact information and social links
+ * Includes email copy functionality
+ * @param {Object} props - Component props
+ * @param {Object} props.t - Translation object
+ */
 function ContactPage({ t }) {
   const [emailCopied, setEmailCopied] = useState(false);
 
@@ -1182,21 +983,27 @@ function MobileQuickNav({ t }) {
   );
 }
 
+/**
+ * AppShell Component
+ * Main application shell with routing and layout
+ * Manages language, cookie consent, and overall page structure
+ */
 function AppShell() {
   const [lang, setLang] = useState('en');
-  const [showCookieBanner, setShowCookieBanner] = useState(false);
+  
+  // Initialize cookie banner state based on localStorage
+  const [showCookieBanner, setShowCookieBanner] = useState(() => {
+    try {
+      const consent = window.localStorage.getItem('cookie_consent_choice');
+      return !consent;
+    } catch {
+      return true;
+    }
+  });
+  
   const t = content[lang];
   const location = useLocation();
   const ctaVariant = t.ctaVariants[location.pathname] ?? t.ctaVariants.default;
-
-  useEffect(() => {
-    try {
-      const consent = window.localStorage.getItem('cookie_consent_choice');
-      setShowCookieBanner(!consent);
-    } catch {
-      setShowCookieBanner(true);
-    }
-  }, []);
 
   const handleCookieChoice = (choice) => {
     try {
@@ -1229,10 +1036,17 @@ function AppShell() {
   );
 }
 
+/**
+ * Main App Component
+ * Wraps the entire application with error boundary and router
+ * Provides error handling and navigation
+ */
 export default function App() {
   return (
-    <HashRouter>
-      <AppShell />
-    </HashRouter>
+    <ErrorBoundary>
+      <HashRouter>
+        <AppShell />
+      </HashRouter>
+    </ErrorBoundary>
   );
 }
