@@ -13,7 +13,7 @@ import {
 export const techStack = [
   { icon: Terminal, title: 'Programming', skills: ['Python', 'SQL', 'Matlab', 'Arduino'] },
   { icon: Cpu, title: 'AI & ML', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'XGBoost'] },
-  { icon: Layers, title: 'Analytics', skills: ['Pandas', 'NumPy', 'Power BI', 'Seaborn'] },
+  { icon: Layers, title: 'Analytics', skills: ['Pandas', 'NumPy', 'Power BI', 'Tableau'] },
   { icon: Database, title: 'Infrastructure', skills: ['AWS', 'Azure', 'Docker', 'Git'] },
-  { icon: Zap, title: 'Specialized', skills: ['PVsyst', 'Solar Design', 'ERP', 'Blender'] },
+  { icon: Zap, title: 'Industrial IT', skills: ['OPC UA', 'MES/SAP', 'PLC Programming', 'AutoCAD'] },
 ];
