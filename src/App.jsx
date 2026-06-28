@@ -28,7 +28,7 @@ import { PageWrap, SectionHeader, ResponsiveImage, ContactLink } from './compone
 // Configuration imports
 import { personalInfo } from './config/personalInfo';
 import { techStack } from './config/techStack';
-import { projectsData } from './config/projects';
+import { useProjects } from './hooks/useProjects';
 
 const content = {
   en: {
@@ -632,12 +632,12 @@ function ProjectModal({ project, lang, t, onClose }) {
  * @param {Object} props.t - Translation object
  * @param {string} props.lang - Current language
  */
-function ProjectsPage({ t, lang }) {
+function ProjectsPage({ t, lang, projects }) {
   return (
     <PageWrap title={t.projectsTitle} subtitle={t.projectsSub}>
       <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-10">{t.projectsLong}</p>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-        {projectsData.map((project) => (
+        {projects.map((project) => (
           <Link key={project.id} to={`/projects/${project.id}`} className="text-left p-6 bg-white rounded-2xl border border-slate-100 hover:border-blue-300 hover:-translate-y-1 transition-all block">
             <div className="flex items-center justify-between mb-4">
               <Icon icon={project.icon} size="lg" />
@@ -678,10 +678,10 @@ function ProjectsPage({ t, lang }) {
  * @param {Object} props.t - Translation object
  * @param {string} props.lang - Current language
  */
-function ProjectDetailPage({ t, lang }) {
+function ProjectDetailPage({ t, lang, projects }) {
   const { id } = useParams();
-  const project = projectsData.find((item) => String(item.id) === String(id));
-  const related = projectsData.filter((item) => item.id !== project?.id);
+  const project = projects.find((item) => String(item.id) === String(id));
+  const related = projects.filter((item) => item.id !== project?.id);
 
   if (!project) {
     return (
@@ -1006,6 +1006,7 @@ function MobileQuickNav({ t }) {
  */
 function AppShell() {
   const [lang, setLang] = useState('en');
+  const { projects } = useProjects();
   
   // Initialize cookie banner state based on localStorage
   const [showCookieBanner, setShowCookieBanner] = useState(() => {
@@ -1037,8 +1038,8 @@ function AppShell() {
         <Route path="/" element={<HomePage t={t} />} />
         <Route path="/about" element={<AboutPage t={t} />} />
         <Route path="/stack" element={<HomePage t={t} />} />
-        <Route path="/projects" element={<ProjectsPage t={t} lang={lang} />} />
-        <Route path="/projects/:id" element={<ProjectDetailPage t={t} lang={lang} />} />
+        <Route path="/projects" element={<ProjectsPage t={t} lang={lang} projects={projects} />} />
+        <Route path="/projects/:id" element={<ProjectDetailPage t={t} lang={lang} projects={projects} />} />
         <Route path="/contact" element={<ContactPage t={t} />} />
         <Route path="/privacy" element={<PrivacyPolicyPage t={t} lang={lang} />} />
         <Route path="/cookies" element={<LegalPage title={t.cookiePolicy} text={t.cookieText} />} />

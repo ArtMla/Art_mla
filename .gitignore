@@ -1,17 +1,5 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-.venv/
-.env
-*.egg-info/
-.model_version
-
-# ML / data
-data/raw/
-data/processed/
-mlruns/
-docs/confusion_matrix.png
+# Data (belongs in project repos, not here)
+data/
 
 # Logs
 logs

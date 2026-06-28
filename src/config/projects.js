@@ -324,6 +324,6 @@ export const projectsData = [
       ],
     },
     stack: ['Python', 'XGBoost', 'AWS S3', 'AWS Glue', 'PostgreSQL', 'FastAPI', 'Docker', 'Next.js', 'GitHub Actions', 'MLflow'],
-    github: 'https://github.com/artmla/Art_mla',
+    github: 'https://github.com/ArtMla/industrial-data-pipeline',
   },
 ];

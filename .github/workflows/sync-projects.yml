@@ -1,0 +1,60 @@
+name: Sync projects.json from projects repo
+
+# Triggered by a repository_dispatch event sent from your projects repository.
+# In your projects repo, add this step to your release/deploy workflow:
+#
+#   - name: Notify portfolio to sync
+#     run: |
+#       curl -X POST https://api.github.com/repos/artmla/Art_mla/dispatches \
+#         -H "Authorization: token ${{ secrets.PORTFOLIO_PAT }}" \
+#         -H "Accept: application/vnd.github.v3+json" \
+#         -d '{"event_type":"sync-projects","client_payload":{}}'
+#
+# The PORTFOLIO_PAT secret must be a fine-grained PAT with:
+#   Contents: Read & write on the artmla/Art_mla repository.
+
+on:
+  repository_dispatch:
+    types: [sync-projects]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Pull latest projects.json and open PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout portfolio repo
+        uses: actions/checkout@v4
+
+      - name: Download projects.json from projects repo
+        run: |
+          curl -sSL \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://raw.githubusercontent.com/artmla/Art_mla/main/public/projects.json" \
+            -o public/projects.json
+
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --quiet public/projects.json && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push if changed
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b sync/projects-$(date +%Y%m%d%H%M%S)
+          git add public/projects.json
+          git commit -m "chore: sync projects.json from projects repo"
+          git push origin HEAD
+
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "chore: sync projects.json from projects repo" \
+            --body "Automated update from the projects repository via repository_dispatch." \
+            --base main
