@@ -1,3 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+.env
+*.egg-info/
+.model_version
+
+# ML / data
+data/raw/
+data/processed/
+mlruns/
+docs/confusion_matrix.png
+
 # Logs
 logs
 *.log
