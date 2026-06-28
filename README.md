@@ -28,6 +28,45 @@ View the live site: [artmla-portfolio-beta.vercel.app](https://artmla-portfolio-
 - **PostCSS** - CSS transformations
 - **ESLint** - Code linting and formatting
 
+## 📁 Featured Projects
+
+### Fleet Predictive Maintenance — Industrial Data Pipeline
+
+A cloud-native data engineering pipeline built to reduce unplanned vehicle downtime across a multi-source telematics fleet.
+
+**Pipeline Stages**
+
+| Stage | Description |
+|---|---|
+| Ingestion | Raw telemetry collected from 6+ vehicle data sources |
+| **Data Transformation** | **AWS Glue ETL job performs schema validation, data cleaning, and conversion from CSV to Parquet — reducing storage footprint and Athena query costs** |
+| KPI Computation | Predictive maintenance scores and route efficiency metrics derived from curated data |
+| Dashboarding | Real-time Tableau dashboards with automated maintenance alerts |
+
+**Engineering Significance**
+
+This project demonstrates the ability to design and deploy **scalable, serverless data pipelines on AWS** — an increasingly critical competency for Data Engineering roles in Germany's Industrie 4.0 landscape. By replacing raw CSV storage with Parquet via AWS Glue, the pipeline achieves columnar compression, predicate pushdown, and significantly lower query costs on S3-backed data lakes — skills directly transferable to enterprise-grade data platform work.
+
+**Stack:** Python · SQL · AWS Glue · S3 · Airflow · Tableau
+
+---
+
+### Solar Output Prediction — Hybrid Physics + ML Forecasting
+
+Stacked ensemble combining physics-informed feature constraints with XGBoost and TensorFlow to improve 48-hour PV output forecasts by 15%.
+
+**Stack:** Python · XGBoost · TensorFlow · AWS
+
+---
+
+### Industrial Defect Detection — Computer Vision QC
+
+Fine-tuned ResNet model on infrared imagery achieving 98% defect detection accuracy, deployed as a containerised FastAPI inference service.
+
+**Stack:** PyTorch · OpenCV · Docker · FastAPI
+
+---
+
 ## 📦 Installation
 
 1. Clone the repository:
