@@ -771,6 +771,19 @@ function ProjectDetailPage({ t, lang }) {
             ))}
           </div>
         </section>
+        {project.github && (
+          <section>
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-lg text-sm hover:bg-slate-700 transition-colors"
+            >
+              <Github size={16} />
+              View on GitHub
+            </a>
+          </section>
+        )}
         <section>
           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">{t.moreStudiesLabel}</p>
           <div className="flex flex-wrap gap-3">
