@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion as Motion, useReducedMotion } from 'motion/react';
 import {
   Menu,
   X,
@@ -38,9 +39,9 @@ const content = {
       { path: '/projects', label: 'Projects' },
       { path: '/contact', label: 'Contact' },
     ],
-    heroTitle: 'Industrial Data Engineer',
-    heroAccent: 'from Sensor to Production.',
-    heroText: 'Mechatronics background with 5+ years in industrial systems. Specialized in cloud-native data pipelines (AWS) that bridge the gap between physical sensor telemetry and production-ready ML analytics. M.Sc. Data Science with Distinction — Berlin.',
+    heroTitle: 'Data & Cloud Engineer',
+    heroAccent: 'from Raw Data to Production Pipelines.',
+    heroText: 'Mechatronics background with 5+ years in industrial systems. Specialized in cloud-native data pipelines (AWS), CI/CD, and containerized services that turn raw sensor data into production-ready infrastructure. M.Sc. Data Science with Distinction — Berlin.',
     heroMetrics: [
       { value: 5, suffix: '+', label: 'Years Industry Exp.' },
       { value: 3, suffix: '+', label: 'ML Projects Delivered' },
@@ -180,7 +181,7 @@ const content = {
     highlights: [
       'M.Sc. Data Science with Distinction — Arden University Berlin (2026)',
       'VDI Member — Verein Deutscher Ingenieure, Berlin Chapter',
-      'B.Eng. Mechatronics with hands-on PLC, OPC UA, and industrial systems background',
+      'B.Eng. Mechatronics with hands on PLC, OPC UA, and industrial systems background',
     ],
     venn: { left: 'Mechatronics', right: 'Data Science', center: 'Industrial ML' },
     experienceTitle: 'Career Timeline',
@@ -200,9 +201,9 @@ const content = {
       { path: '/projects', label: 'Projekte' },
       { path: '/contact', label: 'Kontakt' },
     ],
-    heroTitle: 'Industrial Data Engineer',
-    heroAccent: 'vom Sensor bis in die Produktion.',
-    heroText: 'Mechatronik-Hintergrund mit 5+ Jahren Erfahrung in Industriesystemen. Spezialisiert auf Cloud-native Datenpipelines (AWS), die die Lücke zwischen physischer Sensortelemetrie und produktionsbereiter ML-Analytik schließen. M.Sc. Data Science mit Auszeichnung — Berlin.',
+    heroTitle: 'Data & Cloud Engineer',
+    heroAccent: 'von Rohdaten zu Production-Pipelines.',
+    heroText: 'Mechatronik-Hintergrund mit 5+ Jahren Erfahrung in Industriesystemen. Spezialisiert auf Cloud-native Datenpipelines (AWS), CI/CD und containerisierte Services, die Sensordaten in produktionsreife Infrastruktur verwandeln. M.Sc. Data Science mit Auszeichnung — Berlin.',
     heroMetrics: [
       { value: 5, suffix: '+', label: 'Jahre Industrieerfahrung' },
       { value: 3, suffix: '+', label: 'ML-Projekte' },
@@ -390,11 +391,11 @@ const privacyPolicySections = {
 function Nav({ t, lang, setLang }) {
   const [open, setOpen] = useState(false);
   return (
-    <nav className="liquid-nav fixed w-full z-50">
+    <nav className="editorial-nav fixed w-full z-50">
       <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
         <NavLink to="/" className="flex items-center" onClick={() => setOpen(false)}>
           <div className="h-10 w-10 bg-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-xl mr-3">AM</div>
-          <span className="font-bold text-xl tracking-tight text-slate-900 uppercase hidden sm:block">{personalInfo.name}</span>
+          <span className="font-display font-semibold text-xl tracking-tight text-slate-900 hidden sm:block">{personalInfo.name}</span>
         </NavLink>
         <div className="hidden md:flex items-center gap-8">
           {t.nav.map((item) => (
@@ -436,9 +437,129 @@ function Nav({ t, lang, setLang }) {
  * @param {Object} props - Component props
  * @param {Object} props.t - Translation object
  */
+const heroContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
+  },
+};
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: 'easeOut' },
+  },
+};
+
+const heroPhotoVariants = {
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: 'easeOut', delay: 0.15 },
+  },
+};
+
+const revealVariants = {
+  hidden: { opacity: 0, y: 34 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/**
+ * Reveal Component
+ * Fades and slides content up into view once, when scrolled into the viewport.
+ */
+function Reveal({ children, className = '', delay = 0 }) {
+  const shouldReduceMotion = useReducedMotion();
+  return (
+    <Motion.div
+      className={className}
+      initial={shouldReduceMotion ? false : 'hidden'}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+      variants={revealVariants}
+      transition={{ delay }}
+    >
+      {children}
+    </Motion.div>
+  );
+}
+
+/**
+ * ParticleBackground Component
+ * Subtle floating particles rendered on a fixed full-page canvas.
+ * Pure canvas + rAF, no external libraries.
+ */
+function ParticleBackground() {
+  useEffect(() => {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return undefined;
+    const ctx = canvas.getContext('2d');
+    let width;
+    let height;
+    let particles = [];
+    let frameId;
+
+    const colors = ['rgba(193,97,63,0.32)', 'rgba(201,154,59,0.32)', 'rgba(58,42,32,0.16)'];
+
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    const makeParticles = () => {
+      const count = Math.min(50, Math.floor(window.innerWidth / 28));
+      particles = Array.from({ length: count }, (_, i) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: 1 + Math.random() * 2.4,
+        vy: 0.1 + Math.random() * 0.22,
+        vx: (Math.random() - 0.5) * 0.15,
+        color: colors[i % colors.length],
+      }));
+    };
+
+    resize();
+    makeParticles();
+
+    const tick = () => {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.y += p.vy;
+        p.x += p.vx;
+        if (p.y > height) p.y = 0;
+        if (p.y < 0) p.y = height;
+        if (p.x > width) p.x = 0;
+        if (p.x < 0) p.x = width;
+      });
+      frameId = requestAnimationFrame(tick);
+    };
+    tick();
+
+    const handleResize = () => {
+      resize();
+      makeParticles();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  return <canvas id="particle-canvas" aria-hidden="true" />;
+}
+
 function HomePage({ t }) {
   const navigate = useNavigate();
   const [counts, setCounts] = useState(t.heroMetrics.map(() => 0));
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const duration = 1200;
@@ -464,14 +585,18 @@ function HomePage({ t }) {
           <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px]" />
         </div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-6">{t.heroTitle} <span className="text-blue-700">{t.heroAccent}</span></h1>
-            <p className="text-xl text-slate-700 mb-10">{t.heroText}</p>
-            <div className="flex gap-4 flex-wrap">
+          <Motion.div
+            initial={shouldReduceMotion ? false : 'hidden'}
+            animate="visible"
+            variants={heroContainerVariants}
+          >
+            <Motion.h1 variants={heroItemVariants} className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-6">{t.heroTitle} <span className="shimmer-text">{t.heroAccent}</span></Motion.h1>
+            <Motion.p variants={heroItemVariants} className="text-xl text-slate-700 mb-10">{t.heroText}</Motion.p>
+            <Motion.div variants={heroItemVariants} className="flex gap-4 flex-wrap">
               <button onClick={() => navigate('/projects')} className="px-8 py-4 bg-white text-slate-900 font-bold rounded flex items-center">{t.viewProjects} <Icon icon={ArrowRight} className="ml-2 text-slate-900" /></button>
               <button onClick={() => navigate('/contact')} className="px-8 py-4 border border-slate-200 bg-white text-slate-900 font-bold rounded">{t.getInTouch}</button>
-            </div>
-            <div className="grid grid-cols-3 gap-6 border-t border-slate-200 pt-8 mt-10">
+            </Motion.div>
+            <Motion.div variants={heroItemVariants} className="grid grid-cols-3 gap-6 border-t border-slate-200 pt-8 mt-10">
               {t.heroMetrics.map((metric, idx) => (
                 <div key={metric.label}>
                   <p className="text-2xl md:text-3xl font-black text-slate-900 mb-1">
@@ -481,36 +606,75 @@ function HomePage({ t }) {
                   <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{metric.label}</p>
                 </div>
               ))}
+            </Motion.div>
+          </Motion.div>
+          <Motion.div
+            className="hidden md:flex justify-center"
+            initial={shouldReduceMotion ? false : 'hidden'}
+            animate="visible"
+            variants={heroPhotoVariants}
+          >
+            <div className="relative w-[320px] h-[320px]">
+              <div className="avatar-ring" />
+              <div className="avatar-ring delay" />
+              <div className="relative z-[2] w-full h-full rounded-full border-[6px] border-white shadow-2xl overflow-hidden">
+                <ResponsiveImage
+                  src={personalInfo.imagePath}
+                  alt={`${personalInfo.name} - Portfolio photo`}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+              </div>
             </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="aspect-[4/5] bg-slate-800 rounded-2xl border border-white/10 overflow-hidden">
-              <ResponsiveImage
-                src={personalInfo.imagePath}
-                alt={`${personalInfo.name} - Portfolio photo`}
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            </div>
-          </div>
+          </Motion.div>
         </div>
       </section>
       <section className="pt-24 pb-10 bg-white">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{t.stackTitle}</h2>
-          <p className="text-slate-600 mb-10 max-w-2xl">{t.stackSub}</p>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {techStack.map((item) => (
-              <div key={item.title} className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                <Icon icon={item.icon} size="lg" className="mb-4" />
-                <h4 className="text-[10px] font-black uppercase mb-4 tracking-widest">{item.title}</h4>
-                <ul className="space-y-2">{item.skills.map((s) => <li key={s} className="text-xs text-slate-600">{s}</li>)}</ul>
-              </div>
+          <Reveal>
+            <h2 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{t.stackTitle}</h2>
+            <p className="text-slate-600 mb-10 max-w-2xl">{t.stackSub}</p>
+          </Reveal>
+          <div className="grid md:grid-cols-2 gap-x-14 gap-y-10">
+            {techStack.map((group, idx) => (
+              <Reveal key={group.title} delay={(idx % 2) * 0.08}>
+                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-900 mb-5">
+                  <Icon icon={group.icon} size="sm" />
+                  {group.title}
+                </h3>
+                {group.skills.map((skill) => (
+                  <SkillBar key={skill.name} name={skill.name} level={skill.level} />
+                ))}
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
     </>
+  );
+}
+
+/**
+ * SkillBar Component
+ * A single labeled progress bar that animates its fill width into view.
+ */
+function SkillBar({ name, level }) {
+  return (
+    <div className="mb-4 last:mb-0">
+      <div className="flex justify-between text-sm font-medium text-slate-600 mb-2">
+        <span>{name}</span>
+        <span>{level}%</span>
+      </div>
+      <div className="skill-track">
+        <Motion.div
+          className="skill-fill"
+          initial={{ width: 0 }}
+          whileInView={{ width: `${level}%` }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -523,19 +687,19 @@ function HomePage({ t }) {
 function AboutPage({ t }) {
   return (
     <PageWrap title={t.aboutTitle} subtitle={t.aboutSub}>
-      <div className="space-y-4 mb-10">
+      <Reveal className="space-y-4 mb-10">
         {t.aboutLong.map((paragraph) => (
           <p key={paragraph} className="text-sm md:text-base text-slate-600 leading-relaxed">{paragraph}</p>
         ))}
-      </div>
-      <div className="grid md:grid-cols-3 gap-4 mb-10">
+      </Reveal>
+      <Reveal className="grid md:grid-cols-3 gap-4 mb-10">
         {t.highlights.map((item) => (
           <div key={item} className="p-5 bg-white rounded-xl border border-slate-100">
             <p className="text-sm text-slate-700">{item}</p>
           </div>
         ))}
-      </div>
-      <div className="mb-12">
+      </Reveal>
+      <Reveal className="mb-12">
         <h3 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{t.approachTitle}</h3>
         <div className="grid md:grid-cols-3 gap-4">
           {t.approachItems.map((item) => (
@@ -544,24 +708,26 @@ function AboutPage({ t }) {
             </div>
           ))}
         </div>
-      </div>
-      <div className="relative h-56 mb-14 hidden sm:block">
-        <div className="absolute left-0 top-0 w-44 h-44 rounded-full border-2 border-blue-300 bg-blue-50/70 flex items-center justify-center text-xs font-black text-blue-900 text-center p-4">
+      </Reveal>
+      <Reveal className="relative h-56 mb-14 hidden sm:block">
+        <div className="absolute left-0 top-0 w-44 h-44 rounded-full border-2 border-terracotta/40 bg-terracotta/10 flex items-center justify-center text-xs font-black text-terracotta-2 text-center p-4">
           {t.venn.left}
         </div>
-        <div className="absolute left-28 top-0 w-44 h-44 rounded-full border-2 border-teal-300 bg-teal-50/70 flex items-center justify-center text-xs font-black text-teal-900 text-center p-4">
+        <div className="absolute left-28 top-0 w-44 h-44 rounded-full border-2 border-gold/40 bg-gold/10 flex items-center justify-center text-xs font-black text-brown text-center p-4">
           {t.venn.right}
         </div>
         <div className="absolute left-24 top-28 px-4 py-2 bg-slate-900 rounded-full text-white text-[10px] font-black uppercase tracking-widest">
           {t.venn.center}
         </div>
-      </div>
+      </Reveal>
       <div>
-        <h3 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-6">{t.experienceTitle}</h3>
+        <Reveal>
+          <h3 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-6">{t.experienceTitle}</h3>
+        </Reveal>
         <div className="relative space-y-6">
           <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-slate-200" />
-          {t.experienceSteps.map((step) => (
-            <div key={`${step.year}${step.role}`} className="relative pl-10">
+          {t.experienceSteps.map((step, idx) => (
+            <Reveal key={`${step.year}${step.role}`} className="relative pl-10" delay={(idx % 3) * 0.06}>
               <span className="absolute left-0 top-2 w-4 h-4 rounded-full bg-blue-600 border-4 border-white" />
               <div className="p-5 bg-white rounded-xl border border-slate-100">
                 <p className="text-[10px] font-black uppercase tracking-widest text-blue-700 mb-2">{step.year}</p>
@@ -569,7 +735,7 @@ function AboutPage({ t }) {
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">{step.org}</p>
                 <p className="text-sm text-slate-600">{step.desc}</p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -635,38 +801,40 @@ function ProjectModal({ project, lang, t, onClose }) {
 function ProjectsPage({ t, lang, projects }) {
   return (
     <PageWrap title={t.projectsTitle} subtitle={t.projectsSub}>
-      <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-10">{t.projectsLong}</p>
+      <Reveal><p className="text-sm md:text-base text-slate-600 leading-relaxed mb-10">{t.projectsLong}</p></Reveal>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-        {projects.map((project) => (
-          <Link key={project.id} to={`/projects/${project.id}`} className="text-left p-6 bg-white rounded-2xl border border-slate-100 hover:border-blue-300 hover:-translate-y-1 transition-all block">
-            <div className="flex items-center justify-between mb-4">
-              <Icon icon={project.icon} size="lg" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-700">{project.category}</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900 mb-2">{project.title[lang]}</h3>
-            <p className="text-sm text-slate-600 mb-4">{project.short[lang]}</p>
-            <div className="flex items-center text-xs font-bold text-slate-500">
-              <Briefcase size={14} className="mr-2" />
-              {t.starViewLabel}
-            </div>
-          </Link>
+        {projects.map((project, idx) => (
+          <Reveal key={project.id} delay={(idx % 3) * 0.08}>
+            <Link to={`/projects/${project.id}`} className="glow-card text-left p-6 bg-white rounded-2xl border border-slate-100 hover:border-terracotta hover:-translate-y-1 transition-all block">
+              <div className="flex items-center justify-between mb-4">
+                <Icon icon={project.icon} size="lg" />
+                <span className="text-[10px] font-black uppercase tracking-widest text-blue-700">{project.category}</span>
+              </div>
+              <h3 className="text-base font-bold text-slate-900 mb-2">{project.title[lang]}</h3>
+              <p className="text-sm text-slate-600 mb-4">{project.short[lang]}</p>
+              <div className="flex items-center text-xs font-bold text-slate-500">
+                <Briefcase size={14} className="mr-2" />
+                {t.starViewLabel}
+              </div>
+            </Link>
+          </Reveal>
         ))}
       </div>
-      <div className="bg-slate-900 rounded-2xl p-8 text-white">
-        <p className="text-xs uppercase tracking-[0.2em] text-blue-300 mb-3">{t.quickSummary}</p>
+      <Reveal className="bg-slate-900 rounded-2xl p-8 text-white">
+        <p className="text-xs uppercase tracking-[0.2em] text-gold-2 mb-3">{t.quickSummary}</p>
         <ul className="space-y-2 text-sm text-slate-200">
           {t.quickSummaryItems.map((item) => (
             <li key={item}>- {item}</li>
           ))}
         </ul>
-      </div>
-      <div className="mt-10 grid md:grid-cols-3 gap-4">
+      </Reveal>
+      <Reveal className="mt-10 grid md:grid-cols-3 gap-4">
         {t.projectTakeaways.map((item) => (
           <div key={item} className="p-5 bg-white rounded-xl border border-slate-100">
             <p className="text-sm text-slate-700">{item}</p>
           </div>
         ))}
-      </div>
+      </Reveal>
     </PageWrap>
   );
 }
@@ -698,10 +866,10 @@ function ProjectDetailPage({ t, lang, projects }) {
   return (
     <PageWrap title={project.title[lang]} subtitle={project.short[lang]}>
       <div className="space-y-8">
-        <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-8 text-white">
-          <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_80%_10%,rgba(59,130,246,0.55),transparent_40%)]" />
+        <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-brown via-brown-2 to-brown p-8 text-white">
+          <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_80%_10%,rgba(201,154,59,0.55),transparent_40%)]" />
           <div className="relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-200 mb-3">{project.category}</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gold-2 mb-3">{project.category}</p>
             <h3 className="text-2xl md:text-3xl font-black mb-2">{project.title[lang]}</h3>
             <p className="text-sm text-slate-200">{project.short[lang]}</p>
           </div>
@@ -788,7 +956,7 @@ function ProjectDetailPage({ t, lang, projects }) {
           <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">{t.moreStudiesLabel}</p>
           <div className="flex flex-wrap gap-3">
             {related.map((item) => (
-              <Link key={item.id} to={`/projects/${item.id}`} className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:border-blue-300">
+              <Link key={item.id} to={`/projects/${item.id}`} className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:border-terracotta">
                 {item.title[lang]}
               </Link>
             ))}
@@ -825,29 +993,31 @@ function ContactPage({ t }) {
 
   return (
     <PageWrap title={t.contactTitle} subtitle={t.contactSub}>
-      <p className="text-sm md:text-base text-slate-600 leading-relaxed mb-8">{t.contactLong}</p>
-      <div className="mb-8">
+      <Reveal><p className="text-sm md:text-base text-slate-600 leading-relaxed mb-8">{t.contactLong}</p></Reveal>
+      <Reveal className="mb-8">
         <h3 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{t.collaborationTitle}</h3>
         <ul className="space-y-2">
           {t.collaborationItems.map((item) => (
             <li key={item} className="text-sm text-slate-700">- {item}</li>
           ))}
         </ul>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      </Reveal>
+      <Reveal className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <a href={`mailto:${personalInfo.email}`} className="flex items-center p-4 bg-white rounded-2xl border border-slate-100"><Icon icon={Mail} className="mr-2" />{t.labelEmail}</a>
         <a href={`https://linkedin.com/in/${personalInfo.linkedin}`} target="_blank" rel="noreferrer" className="flex items-center p-4 bg-white rounded-2xl border border-slate-100"><Icon icon={Linkedin} className="mr-2" />{t.labelLinkedIn}</a>
         <a href={`https://github.com/${personalInfo.github}`} target="_blank" rel="noreferrer" className="flex items-center p-4 bg-white rounded-2xl border border-slate-100"><Icon icon={Github} className="mr-2" />{t.labelGitHub}</a>
         <a href={`https://twitter.com/${personalInfo.twitter}`} target="_blank" rel="noreferrer" className="flex items-center p-4 bg-white rounded-2xl border border-slate-100"><Icon icon={Twitter} className="mr-2" />{t.labelTwitter}</a>
-      </div>
-      <button onClick={copyEmail} className="relative inline-flex items-center py-3 px-6 bg-white border border-slate-200 text-slate-700 rounded-xl mr-3">
-        <Icon icon={Mail} className="mr-2" />
-        {personalInfo.email}
-        {emailCopied ? <Check size={14} className="ml-2 text-green-600" /> : <Copy size={14} className="ml-2 text-slate-400" />}
-        {emailCopied && <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded">{t.contactCopied}</span>}
-      </button>
-      <a href={personalInfo.cvPath} download className="inline-flex items-center py-3 px-6 bg-slate-900 text-white rounded-xl"><Icon icon={Download} className="mr-2 text-white" />{t.resumeLabel}</a>
-      <button className="ml-3 inline-flex items-center py-3 px-6 bg-blue-600 text-white rounded-xl"><Icon icon={MessageSquare} className="mr-2 text-white" />{t.sendMessageLabel}</button>
+      </Reveal>
+      <Reveal>
+        <button onClick={copyEmail} className="relative inline-flex items-center py-3 px-6 bg-white border border-slate-200 text-slate-700 rounded-xl mr-3">
+          <Icon icon={Mail} className="mr-2" />
+          {personalInfo.email}
+          {emailCopied ? <Check size={14} className="ml-2 text-green-600" /> : <Copy size={14} className="ml-2 text-slate-400" />}
+          {emailCopied && <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-2 py-1 rounded">{t.contactCopied}</span>}
+        </button>
+        <a href={personalInfo.cvPath} download className="inline-flex items-center py-3 px-6 bg-slate-900 text-white rounded-xl"><Icon icon={Download} className="mr-2 text-white" />{t.resumeLabel}</a>
+        <button className="ml-3 inline-flex items-center py-3 px-6 bg-blue-600 text-white rounded-xl"><Icon icon={MessageSquare} className="mr-2 text-white" />{t.sendMessageLabel}</button>
+      </Reveal>
     </PageWrap>
   );
 }
@@ -891,24 +1061,24 @@ function ImpactCTA({ t, variant }) {
   return (
     <section className="py-8 px-4">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 rounded-[2.5rem] p-12 md:p-24 text-center overflow-hidden border border-white/10 shadow-2xl">
+        <Reveal className="relative bg-gradient-to-br from-brown via-brown-deep to-brown rounded-[2.5rem] p-12 md:p-24 text-center overflow-hidden border border-white/10 shadow-2xl">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-blue-500/20 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-gold/20 blur-[120px] rounded-full pointer-events-none" />
           <div className="relative z-10 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-[10px] font-black uppercase tracking-widest mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/20 text-gold-2 text-[10px] font-black uppercase tracking-widest mb-8">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-gold-2" />
               </span>
               {t.ctaStatus}
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight tracking-tight">{variant.title}</h2>
             <p className="text-lg text-slate-400 mb-12 leading-relaxed">{variant.text}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a href="#/contact" className="group relative px-8 py-4 bg-white text-slate-900 font-bold text-sm rounded-xl hover:bg-blue-50 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center gap-3">
-                <Mail size={18} className="text-blue-600" />
+              <a href="#/contact" className="group relative px-8 py-4 bg-white text-slate-900 font-bold text-sm rounded-xl hover:bg-cream-2 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center gap-3">
+                <Mail size={18} className="text-terracotta-2" />
                 <span>{variant.button}</span>
-                <ArrowRight size={16} className="text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                <ArrowRight size={16} className="text-slate-400 group-hover:text-terracotta-2 group-hover:translate-x-1 transition-all" />
               </a>
               <a href={personalInfo.cvPath} download className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold text-sm rounded-xl hover:bg-white/5 transition-all flex items-center gap-3">
                 <Download size={18} />
@@ -916,7 +1086,7 @@ function ImpactCTA({ t, variant }) {
               </a>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1032,7 +1202,8 @@ function AppShell() {
   };
 
   return (
-    <div className="liquid-shell min-h-screen text-slate-800 font-sans selection:bg-blue-100">
+    <div className="editorial-shell min-h-screen text-slate-800 font-sans selection:bg-gold-2/40">
+      <ParticleBackground />
       <Nav t={t} lang={lang} setLang={setLang} />
       <Routes>
         <Route path="/" element={<HomePage t={t} />} />

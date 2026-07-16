@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arthur Mlambo — Data Scientist &amp; Mechatronics Engineer</title>
+<meta name="description" content="Arthur Mlambo — Data Science M.Sc. (Distinction) and Mechatronics Engineer, Berlin. Predictive maintenance, MLOps, and industrial systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf6ee;
+    --cream-2:#f3ecdd;
+    --paper:#fffdf8;
+    --brown:#3a2a20;
+    --brown-2:#5c4433;
+    --terracotta:#c1613f;
+    --terracotta-2:#a34b2d;
+    --gold:#c99a3b;
+    --gold-2:#e0b458;
+    --ink-soft:#6b5c4f;
+    --line:rgba(58,42,32,0.12);
+    --shadow: 0 20px 45px -20px rgba(58,42,32,0.25);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--brown);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Playfair Display', serif;
+    margin:0;
+    color:var(--brown);
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  ::selection{background:var(--gold-2);color:#241a13;}
+
+  /* ---------- Loading screen ---------- */
+  #loader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity .7s ease, visibility .7s ease;
+  }
+  #loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+  .loader-mark{
+    font-family:'Playfair Display', serif;
+    font-size:clamp(2rem,6vw,3.2rem);
+    color:var(--brown);
+    letter-spacing:.06em;
+    opacity:0;
+    animation:loaderFade 1.1s ease forwards;
+  }
+  .loader-mark span{color:var(--terracotta);}
+  @keyframes loaderFade{
+    0%{opacity:0;transform:translateY(14px);}
+    100%{opacity:1;transform:translateY(0);}
+  }
+
+  /* ---------- Background particles ---------- */
+  #particle-canvas{
+    position:fixed;inset:0;width:100%;height:100%;
+    z-index:0;pointer-events:none;
+    opacity:.55;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:500;
+    background:rgba(250,246,238,0.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:1120px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;
+  }
+  .brand{
+    font-family:'Playfair Display', serif;
+    font-weight:700;font-size:1.15rem;
+    letter-spacing:.02em;
+  }
+  .brand em{font-style:normal;color:var(--terracotta);}
+  .nav-links{
+    display:flex;gap:28px;list-style:none;margin:0;padding:0;
+  }
+  .nav-links a{
+    text-decoration:none;font-size:.92rem;font-weight:500;
+    color:var(--brown-2);
+    position:relative;padding:4px 0;
+    transition:color .25s ease;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-2px;
+    width:0;height:2px;background:var(--terracotta);
+    transition:width .3s ease;
+  }
+  .nav-links a:hover{color:var(--terracotta-2);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    display:inline-block;
+    background:var(--brown);
+    color:var(--cream)!important;
+    padding:10px 20px;border-radius:999px;
+    font-size:.85rem;font-weight:600;
+    text-decoration:none;
+    transition:transform .25s ease, background .25s ease;
+  }
+  .nav-cta:hover{background:var(--terracotta);transform:translateY(-2px);}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .nav-toggle span{display:block;width:22px;height:2px;background:var(--brown);margin:5px 0;transition:.3s;}
+
+  @media (max-width:800px){
+    .nav-links{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--paper);
+      flex-direction:column;gap:0;
+      max-height:0;overflow:hidden;
+      transition:max-height .35s ease;
+      border-bottom:1px solid var(--line);
+    }
+    .nav-links.open{max-height:340px;}
+    .nav-links li{width:100%;}
+    .nav-links a{display:block;padding:16px 28px;border-top:1px solid var(--line);}
+    .nav-cta{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  main{position:relative;z-index:1;}
+  section{
+    max-width:1120px;margin:0 auto;
+    padding:120px 28px 40px;
+  }
+  .section-label{
+    display:inline-flex;align-items:center;gap:10px;
+    text-transform:uppercase;letter-spacing:.18em;
+    font-size:.72rem;font-weight:600;color:var(--terracotta-2);
+    margin-bottom:18px;
+  }
+  .section-label::before{
+    content:'';width:26px;height:1px;background:var(--terracotta-2);
+  }
+  .section-title{
+    font-size:clamp(1.9rem,4vw,2.6rem);
+    margin-bottom:14px;
+  }
+  .section-sub{
+    color:var(--ink-soft);
+    max-width:640px;
+    font-size:1.02rem;line-height:1.65;
+  }
+
+  /* ---------- Reveal ---------- */
+  .reveal{
+    opacity:0;transform:translateY(34px);
+    transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+
+  /* ---------- Hero ---------- */
+  #hero{
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding-top:140px;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;width:100%;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size:.85rem;font-weight:600;color:var(--terracotta-2);
+    letter-spacing:.08em;text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .hero-name{
+    font-size:clamp(2.6rem,7vw,4.6rem);
+    line-height:1.05;
+    margin-bottom:18px;
+  }
+  .shimmer{
+    position:relative;
+    display:inline-block;
+    background:linear-gradient(100deg,
+      var(--brown) 30%, var(--gold-2) 45%, var(--terracotta) 50%, var(--brown) 65%);
+    background-size:250% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:shimmerSweep 4.5s ease-in-out infinite;
+  }
+  @keyframes shimmerSweep{
+    0%{background-position:200% center;}
+    50%{background-position:0% center;}
+    100%{background-position:-200% center;}
+  }
+  .hero-role{
+    font-size:clamp(1.1rem,2.4vw,1.4rem);
+    color:var(--brown-2);
+    font-weight:500;
+    margin-bottom:20px;
+  }
+  .hero-role .divider{color:var(--gold);margin:0 10px;}
+  .hero-one-liner{
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    max-width:520px;
+    line-height:1.7;
+    margin-bottom:34px;
+  }
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:38px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 26px;border-radius:999px;
+    font-weight:600;font-size:.95rem;
+    text-decoration:none;
+    transition:transform .3s ease, box-shadow .3s ease, background .3s ease;
+    cursor:pointer;border:none;
+  }
+  .btn-primary{
+    background:var(--terracotta);color:#fff8ef;
+    box-shadow:0 12px 26px -10px rgba(163,75,45,.55);
+  }
+  .btn-primary:hover{background:var(--terracotta-2);transform:translateY(-3px);}
+  .btn-outline{
+    background:transparent;color:var(--brown);
+    border:1.5px solid var(--line);
+  }
+  .btn-outline:hover{border-color:var(--terracotta);color:var(--terracotta-2);transform:translateY(-3px);}
+
+  .hero-meta{
+    display:flex;gap:28px;flex-wrap:wrap;
+  }
+  .hero-meta div{
+    display:flex;flex-direction:column;
+  }
+  .hero-meta strong{
+    font-family:'Playfair Display', serif;
+    font-size:1.5rem;color:var(--brown);
+  }
+  .hero-meta span{
+    font-size:.78rem;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:.06em;
+  }
+
+  .hero-visual{
+    display:flex;justify-content:center;align-items:center;
+    position:relative;
+  }
+  .avatar-wrap{
+    position:relative;
+    width:min(340px, 80vw);
+    height:min(340px, 80vw);
+  }
+  .avatar-ring{
+    position:absolute;inset:-14px;
+    border-radius:50%;
+    border:2px solid var(--gold);
+    animation:pulseRing 2.8s ease-in-out infinite;
+  }
+  .avatar-ring.delay{
+    animation-delay:.9s;
+    border-color:var(--terracotta);
+  }
+  @keyframes pulseRing{
+    0%{transform:scale(.94);opacity:.9;}
+    70%{transform:scale(1.14);opacity:0;}
+    100%{transform:scale(1.14);opacity:0;}
+  }
+  .avatar-photo{
+    width:100%;height:100%;border-radius:50%;
+    object-fit:cover;
+    border:6px solid var(--paper);
+    box-shadow:var(--shadow);
+    position:relative;z-index:2;
+  }
+  .avatar-badge{
+    position:absolute;bottom:6px;right:6px;z-index:3;
+    background:var(--brown);color:var(--cream);
+    padding:9px 16px;border-radius:999px;
+    font-size:.78rem;font-weight:600;
+    box-shadow:0 10px 20px -8px rgba(0,0,0,.35);
+    display:flex;align-items:center;gap:6px;
+  }
+  .avatar-badge::before{
+    content:'';width:8px;height:8px;border-radius:50%;
+    background:#7bd88f;
+    box-shadow:0 0 0 3px rgba(123,216,143,.25);
+  }
+
+  .scroll-cue{
+    position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:var(--ink-soft);font-size:.72rem;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  .scroll-cue .stick{
+    width:1px;height:34px;background:linear-gradient(var(--terracotta), transparent);
+    animation:scrollDown 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDown{
+    0%{transform:scaleY(0);transform-origin:top;opacity:0;}
+    40%{transform:scaleY(1);transform-origin:top;opacity:1;}
+    60%{transform:scaleY(1);transform-origin:bottom;opacity:1;}
+    100%{transform:scaleY(0);transform-origin:bottom;opacity:0;}
+  }
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;text-align:center;}
+    .hero-one-liner{margin-left:auto;margin-right:auto;}
+    .hero-ctas{justify-content:center;}
+    .hero-meta{justify-content:center;}
+    .hero-visual{order:-1;}
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;
+  }
+  .about-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:30px;
+    box-shadow:var(--shadow);
+  }
+  .about-card p{line-height:1.75;color:var(--brown-2);margin:0 0 16px;}
+  .about-card p:last-child{margin-bottom:0;}
+  .fact-list{display:flex;flex-direction:column;gap:18px;}
+  .fact{
+    display:flex;gap:16px;
+    padding:18px 20px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .fact:hover{transform:translateX(6px);border-color:var(--gold);}
+  .fact-icon{
+    flex-shrink:0;width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(145deg, var(--terracotta), var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff8ef;font-size:1.1rem;font-weight:700;
+  }
+  .fact h4{font-size:1rem;margin-bottom:4px;}
+  .fact p{margin:0;color:var(--ink-soft);font-size:.9rem;line-height:1.5;}
+  @media (max-width:900px){.about-grid{grid-template-columns:1fr;}}
+
+  /* ---------- Skills ---------- */
+  .skills-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:44px 60px;
+  }
+  .skill-group h3{
+    font-size:1.05rem;margin-bottom:20px;
+    display:flex;align-items:center;gap:10px;
+    color:var(--brown);
+  }
+  .skill-group h3::before{
+    content:'';width:8px;height:8px;border-radius:50%;
+    background:var(--terracotta);
+  }
+  .skill-row{margin-bottom:16px;}
+  .skill-row:last-child{margin-bottom:0;}
+  .skill-row .skill-top{
+    display:flex;justify-content:space-between;
+    font-size:.88rem;margin-bottom:7px;color:var(--brown-2);font-weight:500;
+  }
+  .skill-track{
+    height:8px;border-radius:999px;
+    background:var(--cream-2);
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .skill-fill{
+    height:100%;border-radius:999px;
+    width:0%;
+    background:linear-gradient(90deg, var(--terracotta), var(--gold));
+    transition:width 1.4s cubic-bezier(.22,1,.36,1);
+    position:relative;
+  }
+  .skill-fill::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+    animation:shine 2.2s ease-in-out infinite;
+    animation-delay:1.4s;
+  }
+  @keyframes shine{
+    0%{transform:translateX(-100%);}
+    100%{transform:translateX(100%);}
+  }
+  @media (max-width:800px){.skills-grid{grid-template-columns:1fr;gap:34px;}}
+
+  .tool-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;}
+  .chip{
+    padding:8px 16px;border-radius:999px;
+    background:var(--paper);border:1px solid var(--line);
+    font-size:.82rem;font-weight:500;color:var(--brown-2);
+    transition:all .25s ease;
+  }
+  .chip:hover{border-color:var(--terracotta);color:var(--terracotta-2);transform:translateY(-2px);}
+
+  /* ---------- Experience ---------- */
+  .timeline{position:relative;padding-left:32px;}
+  .timeline::before{
+    content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(var(--terracotta), var(--gold) 60%, transparent);
+  }
+  .tl-item{position:relative;padding-bottom:44px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    position:absolute;left:-32px;top:4px;
+    width:14px;height:14px;border-radius:50%;
+    background:var(--paper);border:3px solid var(--terracotta);
+  }
+  .tl-period{
+    font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--terracotta-2);font-weight:600;margin-bottom:6px;
+  }
+  .tl-role{font-size:1.3rem;margin-bottom:2px;}
+  .tl-org{font-size:.95rem;color:var(--ink-soft);margin-bottom:12px;font-weight:500;}
+  .tl-points{margin:0;padding-left:18px;color:var(--brown-2);line-height:1.7;}
+  .tl-points li{margin-bottom:6px;}
+  .tl-points li:last-child{margin-bottom:0;}
+
+  /* ---------- Projects ---------- */
+  .project-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:26px;
+  }
+  @media (max-width:800px){.project-grid{grid-template-columns:1fr;}}
+  .project-card{
+    position:relative;
+    background:var(--paper);
+    border-radius:20px;
+    padding:2px;
+    overflow:hidden;
+  }
+  .project-card::before{
+    content:'';position:absolute;inset:0;
+    border-radius:20px;
+    padding:2px;
+    background:conic-gradient(from 0deg, var(--terracotta), var(--gold), var(--terracotta));
+    opacity:0;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    transition:opacity .4s ease;
+    animation:rotateGlow 4s linear infinite;
+  }
+  .project-card:hover::before{opacity:1;}
+  @keyframes rotateGlow{
+    to{transform:rotate(360deg);}
+  }
+  .project-inner{
+    position:relative;z-index:1;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px;
+    height:100%;
+    transition:transform .35s ease;
+  }
+  .project-card:hover .project-inner{transform:translateY(-4px);}
+  .project-tag{
+    display:inline-block;font-size:.72rem;font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;
+    color:var(--terracotta-2);margin-bottom:12px;
+  }
+  .project-inner h3{font-size:1.28rem;margin-bottom:10px;}
+  .project-inner p{color:var(--brown-2);line-height:1.65;font-size:.94rem;margin:0 0 16px;}
+  .project-stack{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .project-stack span{
+    font-size:.72rem;padding:5px 11px;border-radius:999px;
+    background:var(--cream-2);color:var(--brown-2);font-weight:500;
+  }
+  .project-result{
+    display:flex;gap:18px;flex-wrap:wrap;
+    padding-top:14px;border-top:1px dashed var(--line);
+  }
+  .project-result div strong{
+    font-family:'Playfair Display', serif;
+    font-size:1.15rem;color:var(--terracotta-2);display:block;
+  }
+  .project-result div span{font-size:.72rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;}
+
+  /* ---------- Contact ---------- */
+  #contact{padding-bottom:100px;}
+  .contact-card{
+    background:linear-gradient(135deg, var(--brown) 0%, #2b1f17 100%);
+    border-radius:26px;
+    padding:56px;
+    color:var(--cream);
+    display:grid;grid-template-columns:1.2fr .8fr;gap:40px;
+    position:relative;overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .contact-card::before{
+    content:'';position:absolute;width:340px;height:340px;
+    background:radial-gradient(circle, rgba(201,154,59,.35), transparent 70%);
+    top:-120px;right:-80px;
+  }
+  .contact-card h2{color:var(--cream);font-size:clamp(1.8rem,3.6vw,2.4rem);margin-bottom:14px;}
+  .contact-card p{color:rgba(250,246,238,.78);line-height:1.7;max-width:440px;margin:0;position:relative;z-index:1;}
+  .contact-links{display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;}
+  .contact-link{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 18px;border-radius:14px;
+    background:rgba(250,246,238,.06);
+    border:1px solid rgba(250,246,238,.14);
+    text-decoration:none;color:var(--cream);
+    font-size:.92rem;font-weight:500;
+    transition:all .3s ease;
+  }
+  .contact-link:hover{background:rgba(250,246,238,.13);border-color:var(--gold);transform:translateX(6px);}
+  .contact-link .ci{
+    width:36px;height:36px;border-radius:10px;
+    background:rgba(201,154,59,.25);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-size:1rem;
+  }
+  @media (max-width:800px){
+    .contact-card{grid-template-columns:1fr;padding:36px 26px;}
+  }
+
+  footer{
+    text-align:center;padding:34px 28px 46px;
+    color:var(--ink-soft);font-size:.82rem;
+    position:relative;z-index:1;
+  }
+  footer a{color:var(--terracotta-2);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-mark">Arthur<span>.</span>Mlambo</div></div>
+
+<canvas id="particle-canvas"></canvas>
+
+<header>
+  <nav>
+    <div class="brand">Arthur<em>.</em>Mlambo</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="mailto:arthurmlambo@gmail.com">Hire Me</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <section id="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow reveal">Berlin, Germany · Open to Junior Roles</span>
+        <h1 class="hero-name reveal"><span class="shimmer">Arthur Mlambo</span></h1>
+        <div class="hero-role reveal">Data Scientist <span class="divider">&#9670;</span> Mechatronics Engineer</div>
+        <p class="hero-one-liner reveal">
+          M.Sc. Data Science graduate (Distinction) and mechatronics engineer with 5+ years in industrial
+          systems — now building predictive maintenance models and MLOps pipelines that turn sensor data
+          into decisions.
+        </p>
+        <div class="hero-ctas reveal">
+          <a class="btn btn-primary" href="assets/Arthur Mlambo CV.pdf" download>Download CV ↓</a>
+          <a class="btn btn-outline" href="#contact">Get in touch</a>
+        </div>
+        <div class="hero-meta reveal">
+          <div><strong>5+</strong><span>Years Industry</span></div>
+          <div><strong>100+</strong><span>Systems Delivered</span></div>
+          <div><strong>97.6%</strong><span>ROC-AUC, Thesis</span></div>
+          <div><strong>M.Sc.</strong><span>Distinction, 2026</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="avatar-wrap">
+          <div class="avatar-ring"></div>
+          <div class="avatar-ring delay"></div>
+          <img class="avatar-photo" src="assets/dumi.jpg" alt="Portrait of Arthur Mlambo">
+          <div class="avatar-badge">Open to work</div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="stick"></span></div>
+  </section>
+
+  <section id="about">
+    <span class="section-label reveal">About</span>
+    <h2 class="section-title reveal">Field engineer turned data scientist.</h2>
+    <p class="section-sub reveal">Five years of hands-on industrial systems work, now paired with a Master's in Data Science — the combination that lets me build models that survive contact with real hardware.</p>
+
+    <div class="about-grid" style="margin-top:44px;">
+      <div class="about-card reveal">
+        <p>I'm a Data Science graduate (M.Sc., Distinction) and Mechatronics Engineer (B.Eng.) based in Berlin, with over five years of experience across industrial systems — from Siemens S7 PLC control rooms to fibre-optic networks to 100+ solar installations.</p>
+        <p>My M.Sc. thesis developed a hybrid 1D-CNN + Random Forest predictive maintenance framework for industrial asset failure detection, achieving 97.6% ROC-AUC on binary classification and 0.861 Macro F1 on multiclass fault diagnosis using the AI4I 2020 dataset.</p>
+        <p>I'm looking for a junior data science role where I can apply a hybrid engineering and data-driven approach to real-world industrial problems.</p>
+      </div>
+      <div class="fact-list">
+        <div class="fact reveal">
+          <div class="fact-icon">🎓</div>
+          <div><h4>M.Sc. Data Science — Distinction</h4><p>Arden University, Berlin · Feb 2026</p></div>
+        </div>
+        <div class="fact reveal">
+          <div class="fact-icon">⚙️</div>
+          <div><h4>B.Eng. (Hons) Mechatronics</h4><p>Chinhoyi University of Technology · Dec 2015</p></div>
+        </div>
+        <div class="fact reveal">
+          <div class="fact-icon">🏛️</div>
+          <div><h4>VDI Member, Berlin Chapter</h4><p>Verein Deutscher Ingenieure · PrTech, SA Institute of Engineers</p></div>
+        </div>
+        <div class="fact reveal">
+          <div class="fact-icon">🌐</div>
+          <div><h4>English (C2) · German (A2)</h4><p>Eligible to work in Germany · Based in Berlin</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <span class="section-label reveal">Skills</span>
+    <h2 class="section-title reveal">Tools of the trade.</h2>
+    <p class="section-sub reveal">Python-first data science stack, MLOps tooling for shipping models, and the industrial-systems background to know what the sensor data actually means.</p>
+
+    <div class="skills-grid" style="margin-top:44px;">
+      <div class="skill-group reveal">
+        <h3>Languages & ML</h3>
+        <div class="skill-row" data-level="90">
+          <div class="skill-top"><span>Python (PyTorch, TensorFlow, Scikit-Learn)</span><span>90%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="82">
+          <div class="skill-top"><span>SQL & Data Pipelines</span><span>82%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="85">
+          <div class="skill-top"><span>Time-Series Forecasting & Anomaly Detection</span><span>85%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="70">
+          <div class="skill-top"><span>LLM Concepts & Agentic AI</span><span>70%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <h3>MLOps & Platform</h3>
+        <div class="skill-row" data-level="80">
+          <div class="skill-top"><span>Docker & GitHub Actions (CI/CD)</span><span>80%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="75">
+          <div class="skill-top"><span>FastAPI & Model Serving</span><span>75%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="68">
+          <div class="skill-top"><span>MLflow, Apache Spark, dbt</span><span>68%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+        <div class="skill-row" data-level="72">
+          <div class="skill-top"><span>AWS (S3 / EC2)</span><span>72%</span></div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-chips reveal">
+      <span class="chip">Power BI</span>
+      <span class="chip">Tableau</span>
+      <span class="chip">Pandas / NumPy</span>
+      <span class="chip">Git</span>
+      <span class="chip">Siemens S7 PLC</span>
+      <span class="chip">Stakeholder Reporting</span>
+    </div>
+  </section>
+
+  <section id="experience">
+    <span class="section-label reveal">Experience</span>
+    <h2 class="section-title reveal">Where the field expertise came from.</h2>
+    <p class="section-sub reveal">Four roles across power systems, telecom infrastructure, and heavy industry — the pattern underneath is always the same: diagnose the fault, fix the interface, document it properly.</p>
+
+    <div class="timeline" style="margin-top:48px;">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-period">2024 – Present</div>
+        <h3 class="tl-role">M.Sc. Data Science (Distinction)</h3>
+        <div class="tl-org">Arden University, Berlin</div>
+        <ul class="tl-points">
+          <li>Thesis: Hybrid ML frameworks for predictive maintenance — 1D-CNN + Random Forest, 97.6% ROC-AUC.</li>
+          <li>Modules: Machine Learning, Deep Learning, NLP, Big Data & Spark, Cloud Computing (AWS), AI Ethics.</li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Jan 2023 – Jun 2024</div>
+        <h3 class="tl-role">Solar Systems Engineer</h3>
+        <div class="tl-org">Go Solar (Pvt) Ltd., Cape Town</div>
+        <ul class="tl-points">
+          <li>Designed and supervised the installation of 100+ solar installations, managing full lifecycle from equipment delivery to grid integration.</li>
+          <li>Implemented performance monitoring systems to reduce downtime and optimize system faults.</li>
+          <li>Coordinated cross-functional teams and subcontractors, translating technical findings for non-engineer stakeholders.</li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Oct 2018 – Dec 2020</div>
+        <h3 class="tl-role">Field Systems & Network Technician</h3>
+        <div class="tl-org">Frogfoot Networks, Cape Town</div>
+        <ul class="tl-points">
+          <li>Executed field splicing and network fault localization in high-demand industrial environments.</li>
+          <li>Resolved connectivity issues between hardware endpoints and central network switching.</li>
+          <li>Maintained technical logs and resolution records across a portfolio of client sites.</li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Jan 2014 – Dec 2014</div>
+        <h3 class="tl-role">Electrical/Mechanical Engineering Intern</h3>
+        <div class="tl-org">Steel Makers (Pvt) Ltd., Zimbabwe</div>
+        <ul class="tl-points">
+          <li>Worked with Siemens S7 PLC equipment in a steel manufacturing environment — early exposure to time-series control data and sensor fault patterns.</li>
+          <li>Diagnosed electrical and mechanical faults at the hardware/control software interface via structured root cause analysis.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <span class="section-label reveal">Projects</span>
+    <h2 class="section-title reveal">Selected work.</h2>
+    <p class="section-sub reveal">Two projects that sit at the center of my move from field engineering into data science.</p>
+
+    <div class="project-grid" style="margin-top:44px;">
+      <div class="project-card reveal">
+        <div class="project-inner">
+          <span class="project-tag">2025 – Present</span>
+          <h3>Predictive Maintenance MLOps Pipeline</h3>
+          <p>An end-to-end ML pipeline for fault prediction on time-series sensor data — ingestion, feature engineering, training, and a FastAPI endpoint for model serving, containerised with Docker and deployed through GitHub Actions CI/CD. Includes automated drift detection and retraining triggers so the model stays accurate without manual intervention.</p>
+          <div class="project-stack">
+            <span>Python</span><span>PyTorch</span><span>FastAPI</span><span>Docker</span><span>GitHub Actions</span><span>MLflow</span><span>SQL</span>
+          </div>
+          <div class="project-result">
+            <div><strong>Auto</strong><span>Drift Detection</span></div>
+            <div><strong>CI/CD</strong><span>GitHub Actions</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-inner">
+          <span class="project-tag">2025 – 2026</span>
+          <h3>M.Sc. Thesis: Hybrid ML for Predictive Maintenance</h3>
+          <p>Compared classical time-series models against deep learning architectures for industrial fault prediction, backtesting across multiple sensor datasets. Developed a hybrid 1D-CNN + Random Forest framework for industrial asset failure detection using the AI4I 2020 dataset.</p>
+          <div class="project-stack">
+            <span>PyTorch</span><span>TensorFlow</span><span>Scikit-Learn</span><span>Pandas</span><span>AWS</span>
+          </div>
+          <div class="project-result">
+            <div><strong>97.6%</strong><span>ROC-AUC (Binary)</span></div>
+            <div><strong>0.861</strong><span>Macro F1 (Multiclass)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <span class="section-label reveal">Contact</span>
+    <div class="contact-card reveal">
+      <div>
+        <h2>Let's build something reliable together.</h2>
+        <p>Open to junior data science roles in Berlin and across Germany — especially where industrial systems and predictive maintenance meet. Reach out directly, or download the full CV above.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:arthurmlambo@gmail.com"><span class="ci">✉️</span> arthurmlambo@gmail.com</a>
+        <a class="contact-link" href="tel:+4917665964509"><span class="ci">📞</span> +49 176 6596 4509</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/art-mla" target="_blank" rel="noopener"><span class="ci">in</span> linkedin.com/in/art-mla</a>
+        <a class="contact-link" href="https://github.com/art-mla" target="_blank" rel="noopener"><span class="ci">⌥</span> github.com/art-mla</a>
+        <a class="contact-link" href="assets/Arthur Mlambo CV.pdf" download><span class="ci">↓</span> Download CV (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Arthur Mlambo — Berlin, Germany. Built with HTML, CSS &amp; JavaScript, no frameworks.
+</footer>
+
+<script>
+(function(){
+  // Loading screen
+  window.addEventListener('load', function(){
+    var loader = document.getElementById('loader');
+    setTimeout(function(){ loader.classList.add('hidden'); }, 500);
+  });
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  toggle.addEventListener('click', function(){ links.classList.toggle('open'); });
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ links.classList.remove('open'); });
+  });
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry, i){
+      if (entry.isIntersecting){
+        var el = entry.target;
+        var delay = (Array.prototype.indexOf.call(revealEls, el) % 4) * 90;
+        setTimeout(function(){ el.classList.add('in-view'); }, delay);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(function(el){ observer.observe(el); });
+
+  // Skill bars animate on view
+  var skillRows = document.querySelectorAll('.skill-row');
+  var skillObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        var row = entry.target;
+        var level = row.getAttribute('data-level') || 0;
+        var fill = row.querySelector('.skill-fill');
+        requestAnimationFrame(function(){ fill.style.width = level + '%'; });
+        skillObserver.unobserve(row);
+      }
+    });
+  }, { threshold: 0.4 });
+  skillRows.forEach(function(row){ skillObserver.observe(row); });
+
+  // Floating particles background
+  var canvas = document.getElementById('particle-canvas');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var W, H;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = document.documentElement.scrollHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var colors = ['rgba(193,97,63,0.35)', 'rgba(201,154,59,0.35)', 'rgba(58,42,32,0.18)'];
+
+  function makeParticles(){
+    var count = Math.min(60, Math.floor(window.innerWidth / 22));
+    particles = [];
+    for (var i=0;i<count;i++){
+      particles.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: 1 + Math.random()*2.6,
+        vy: 0.12 + Math.random()*0.28,
+        vx: (Math.random()-0.5)*0.18,
+        drift: Math.random()*Math.PI*2,
+        driftSpeed: 0.002 + Math.random()*0.004,
+        color: colors[i % colors.length]
+      });
+    }
+  }
+  makeParticles();
+  window.addEventListener('resize', makeParticles);
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    var scrollY = window.scrollY || window.pageYOffset;
+    particles.forEach(function(p){
+      p.drift += p.driftSpeed;
+      var sx = p.x + Math.sin(p.drift) * 12;
+      var sy = p.y - scrollY * 0.02;
+      if (sy < -20) sy = H - 20;
+      if (sy > H + 20) sy = -20;
+      ctx.beginPath();
+      ctx.arc(sx, ((p.y + scrollY*0)% H + H) % H, p.r, 0, Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      p.y += p.vy;
+      p.x += p.vx;
+      if (p.y > H) p.y = 0;
+      if (p.y < 0) p.y = H;
+      if (p.x > W) p.x = 0;
+      if (p.x < 0) p.x = W;
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Smooth scroll (native scroll-behavior handles most, this covers older browsers / offset)
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var id = this.getAttribute('href');
+      if (id.length < 2) return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 84;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
