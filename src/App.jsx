@@ -655,12 +655,22 @@ function TechMarquee() {
   return (
     <div className="marquee-mask relative">
       <div className="marquee-track">
-        {[...techStack, ...techStack].map((tech, idx) => (
-          <div key={`${tech.name}-${idx}`} className="marquee-chip">
-            <tech.icon size={28} style={{ color: tech.color }} />
-            <span>{tech.name}</span>
-          </div>
-        ))}
+        <div className="marquee-group">
+          {techStack.map((tech, idx) => (
+            <div key={`${tech.name}-${idx}`} className="marquee-chip">
+              <tech.icon size={28} style={{ color: tech.color }} />
+              <span>{tech.name}</span>
+            </div>
+          ))}
+        </div>
+        <div className="marquee-group" aria-hidden="true">
+          {techStack.map((tech, idx) => (
+            <div key={`${tech.name}-dup-${idx}`} className="marquee-chip">
+              <tech.icon size={28} style={{ color: tech.color }} />
+              <span>{tech.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

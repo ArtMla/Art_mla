@@ -189,13 +189,17 @@ body {
 }
 .marquee-track {
   display: flex;
-  align-items: center;
   gap: 1.25rem;
   width: max-content;
-  animation: marqueeScroll 34s linear infinite;
 }
-.marquee-track:hover {
+.marquee-track:hover .marquee-group {
   animation-play-state: paused;
+}
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  animation: marqueeScroll 34s linear infinite;
 }
 .marquee-chip {
   display: flex;
@@ -217,7 +221,7 @@ body {
 }
 @keyframes marqueeScroll {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(calc(-100% - 1.25rem)); }
 }
 
 /* ---------- Project card border glow on hover ---------- */
