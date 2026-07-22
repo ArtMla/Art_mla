@@ -180,32 +180,44 @@ body {
   border-color: var(--terracotta);
 }
 
-/* ---------- Animated skill bars ---------- */
-.skill-track {
-  height: 8px;
-  border-radius: 999px;
-  background: var(--cream-2);
+/* ---------- Sliding tech-stack marquee ---------- */
+.marquee-mask {
   overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: max-content;
+  animation: marqueeScroll 34s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+.marquee-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.4rem;
+  background: var(--paper);
   border: 1px solid var(--line);
-}
-.skill-fill {
-  height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--terracotta), var(--gold));
-  position: relative;
-  overflow: hidden;
+  white-space: nowrap;
+  color: var(--brown-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px -12px rgba(58, 42, 32, 0.2);
+  flex-shrink: 0;
 }
-@keyframes skillShine {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+.marquee-chip svg {
+  flex-shrink: 0;
 }
-.skill-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-  animation: skillShine 2.2s ease-in-out infinite;
-  animation-delay: 1.4s;
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* ---------- Project card border glow on hover ---------- */

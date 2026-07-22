@@ -39,9 +39,9 @@ const content = {
       { path: '/projects', label: 'Projects' },
       { path: '/contact', label: 'Contact' },
     ],
-    heroTitle: 'Data & Cloud Engineer',
-    heroAccent: 'from Raw Data to Production Pipelines.',
-    heroText: 'Mechatronics background with 5+ years in industrial systems. Specialized in cloud-native data pipelines (AWS), CI/CD, and containerized services that turn raw sensor data into production-ready infrastructure. M.Sc. Data Science with Distinction — Berlin.',
+    heroTitle: 'Mechatronics Engineer & Data Specialist',
+    heroAccent: 'Bridging physical systems, cloud infrastructure, and data pipelines to build reliable, high performing engineering solutions.',
+    heroText: 'Mechatronics Engineer (B.Eng.) with 5+ years in industrial systems, holding an M.Sc. in Data Science with Distinction. Specialized in building cloud-native data pipelines on AWS and containerized services that transform raw sensor telemetry into production-ready infrastructure. Based in Berlin.',
     heroMetrics: [
       { value: 5, suffix: '+', label: 'Years Industry Exp.' },
       { value: 3, suffix: '+', label: 'ML Projects Delivered' },
@@ -584,13 +584,14 @@ function HomePage({ t }) {
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${personalInfo.heroBgPath})` }}>
           <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px]" />
         </div>
-        <div className="max-w-6xl mx-auto px-4 relative z-10 grid md:grid-cols-2 gap-10 items-center">
+        <div className="max-w-6xl mx-auto px-4 relative z-10 grid md:grid-cols-2 gap-10 items-start">
           <Motion.div
+            className="min-w-0"
             initial={shouldReduceMotion ? false : 'hidden'}
             animate="visible"
             variants={heroContainerVariants}
           >
-            <Motion.h1 variants={heroItemVariants} className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-6">{t.heroTitle} <span className="shimmer-text">{t.heroAccent}</span></Motion.h1>
+            <Motion.h1 variants={heroItemVariants} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 leading-tight mb-6 break-words">{t.heroTitle} <span className="shimmer-text">{t.heroAccent}</span></Motion.h1>
             <Motion.p variants={heroItemVariants} className="text-xl text-slate-700 mb-10">{t.heroText}</Motion.p>
             <Motion.div variants={heroItemVariants} className="flex gap-4 flex-wrap">
               <button onClick={() => navigate('/projects')} className="px-8 py-4 bg-white text-slate-900 font-bold rounded flex items-center">{t.viewProjects} <Icon icon={ArrowRight} className="ml-2 text-slate-900" /></button>
@@ -614,7 +615,7 @@ function HomePage({ t }) {
             animate="visible"
             variants={heroPhotoVariants}
           >
-            <div className="relative w-[320px] h-[320px]">
+            <div className="relative w-[380px] h-[380px] lg:w-[440px] lg:h-[440px]">
               <div className="avatar-ring" />
               <div className="avatar-ring delay" />
               <div className="relative z-[2] w-full h-full rounded-full border-[6px] border-white shadow-2xl overflow-hidden">
@@ -629,50 +630,37 @@ function HomePage({ t }) {
           </Motion.div>
         </div>
       </section>
-      <section className="pt-24 pb-10 bg-white">
+      <section className="pt-24 pb-10 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto px-4">
           <Reveal>
             <h2 className="text-xs font-black text-blue-700 uppercase tracking-[0.3em] mb-4">{t.stackTitle}</h2>
             <p className="text-slate-600 mb-10 max-w-2xl">{t.stackSub}</p>
           </Reveal>
-          <div className="grid md:grid-cols-2 gap-x-14 gap-y-10">
-            {techStack.map((group, idx) => (
-              <Reveal key={group.title} delay={(idx % 2) * 0.08}>
-                <h3 className="flex items-center gap-2 text-sm font-bold text-slate-900 mb-5">
-                  <Icon icon={group.icon} size="sm" />
-                  {group.title}
-                </h3>
-                {group.skills.map((skill) => (
-                  <SkillBar key={skill.name} name={skill.name} level={skill.level} />
-                ))}
-              </Reveal>
-            ))}
-          </div>
         </div>
+        <Reveal>
+          <TechMarquee />
+        </Reveal>
       </section>
     </>
   );
 }
 
 /**
- * SkillBar Component
- * A single labeled progress bar that animates its fill width into view.
+ * TechMarquee Component
+ * An infinite horizontally sliding strip of tech-stack icons. Pure CSS
+ * animation (translateX loop) — the list is duplicated once so the loop
+ * is seamless. Hovering pauses it so labels are easy to read.
  */
-function SkillBar({ name, level }) {
+function TechMarquee() {
   return (
-    <div className="mb-4 last:mb-0">
-      <div className="flex justify-between text-sm font-medium text-slate-600 mb-2">
-        <span>{name}</span>
-        <span>{level}%</span>
-      </div>
-      <div className="skill-track">
-        <Motion.div
-          className="skill-fill"
-          initial={{ width: 0 }}
-          whileInView={{ width: `${level}%` }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-        />
+    <div className="marquee-mask relative">
+      <div className="marquee-track">
+        {[...techStack, ...techStack].map((tech, idx) => (
+          <div key={`${tech.name}-${idx}`} className="marquee-chip">
+            <tech.icon size={28} style={{ color: tech.color }} />
+            <span>{tech.name}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
