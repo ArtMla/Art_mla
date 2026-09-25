@@ -134,6 +134,14 @@ body {
   line-height: 1.72;
 }
 
+/* Dark cards: body text inherits the card's light colour instead of dark ink */
+.editorial-shell .bg-slate-900 li {
+  color: inherit;
+}
+.editorial-shell .bg-slate-900 p.text-gold-2 {
+  color: var(--gold-2);
+}
+
 .icon-editorial {
   display: inline-flex;
   align-items: center;
@@ -226,13 +234,18 @@ body {
   isolation: isolate;
   overflow: hidden;
 }
+@property --glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
 .glow-card::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 2px;
-  background: conic-gradient(from 0deg, var(--terracotta), var(--gold), var(--terracotta));
+  background: conic-gradient(from var(--glow-angle), var(--terracotta), var(--gold), var(--terracotta));
   opacity: 0;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -243,10 +256,13 @@ body {
   z-index: 1;
 }
 @keyframes rotateGlow {
-  to { transform: rotate(360deg); }
+  to { --glow-angle: 360deg; }
 }
-.glow-card:hover::before {
-  opacity: 1;
+/* Touch devices keep :hover after a tap, so only glow where a real pointer hovers */
+@media (hover: hover) {
+  .glow-card:hover::before {
+    opacity: 1;
+  }
 }
 
 /* ---------- Floating background particles ---------- */

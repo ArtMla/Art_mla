@@ -39,9 +39,9 @@ const content = {
       { path: '/projects', label: 'Projects' },
       { path: '/contact', label: 'Contact' },
     ],
-    heroTitle: 'Mechatronics Engineer & Data Specialist',
-    heroAccent: 'Bridging physical systems, cloud infrastructure, and data pipelines to build reliable, high performing engineering solutions.',
-    heroText: 'Mechatronics Engineer (B.Eng.) with 5+ years in industrial systems, holding an M.Sc. in Data Science with Distinction. Specialized in building cloud-native data pipelines on AWS and containerized services that transform raw sensor telemetry into production-ready infrastructure. Based in Berlin.',
+    heroTitle: 'Mechatronics Engineer | Data & Infrastructure',
+    heroAccent: 'Engineering reliable physical systems with data, automation, and modern infrastructure technologies.',
+    heroText: 'Mechatronics Engineer (B.Eng.) with 5+ years of hands-on experience across industrial systems, electrical infrastructure, energy systems, fiber networks, and technical operations, complemented by an M.Sc. in Data Science with Distinction. My work combines **electrical and mechanical systems, automation, networking, cloud technologies, and machine learning** to solve complex engineering and infrastructure problems.',
     heroMetrics: [
       { value: 5, suffix: '+', label: 'Years Industry Exp.' },
       { value: 3, suffix: '+', label: 'ML Projects Delivered' },
@@ -159,7 +159,6 @@ const content = {
     cookieBannerText: 'This site uses essential cookies only. You can review details in the Cookie Policy and Privacy Policy.',
     cookieAccept: 'Accept',
     cookieDecline: 'Decline',
-    footerLegalNote: 'Privacy Policy (GDPR) is permanently available in the footer.',
     privacyTitle: 'Privacy Policy (GDPR)',
     privacySubtitle: 'This page is structured to align with core EU GDPR transparency requirements (Arts. 12-14).',
     privacyNote:
@@ -201,9 +200,9 @@ const content = {
       { path: '/projects', label: 'Projekte' },
       { path: '/contact', label: 'Kontakt' },
     ],
-    heroTitle: 'Data & Cloud Engineer',
-    heroAccent: 'von Rohdaten zu Production-Pipelines.',
-    heroText: 'Mechatronik-Hintergrund mit 5+ Jahren Erfahrung in Industriesystemen. Spezialisiert auf Cloud-native Datenpipelines (AWS), CI/CD und containerisierte Services, die Sensordaten in produktionsreife Infrastruktur verwandeln. M.Sc. Data Science mit Auszeichnung — Berlin.',
+    heroTitle: 'Mechatronik-Ingenieur | Daten & Infrastruktur',
+    heroAccent: 'Zuverlässige physische Systeme entwickeln – mit Daten, Automatisierung und modernen Infrastrukturtechnologien.',
+    heroText: 'Mechatronik-Ingenieur (B.Eng.) mit über 5 Jahren praktischer Erfahrung in Industriesystemen, elektrischer Infrastruktur, Energiesystemen, Glasfasernetzen und technischem Betrieb, ergänzt durch einen M.Sc. in Data Science mit Auszeichnung. Meine Arbeit verbindet **elektrische und mechanische Systeme, Automatisierung, Netzwerktechnik, Cloud-Technologien und Machine Learning**, um komplexe Probleme in Technik und Infrastruktur zu lösen.',
     heroMetrics: [
       { value: 5, suffix: '+', label: 'Jahre Industrieerfahrung' },
       { value: 3, suffix: '+', label: 'ML-Projekte' },
@@ -321,7 +320,6 @@ const content = {
     cookieBannerText: 'Diese Website verwendet nur technisch notwendige Cookies. Details finden Sie in Cookie-Richtlinie und Datenschutzerklärung.',
     cookieAccept: 'Akzeptieren',
     cookieDecline: 'Ablehnen',
-    footerLegalNote: 'Die Datenschutzerklärung (DSGVO) ist dauerhaft im Footer verfügbar.',
     privacyTitle: 'Datenschutzerklärung (DSGVO)',
     privacySubtitle: 'Diese Seite orientiert sich an den zentralen DSGVO-Transparenzanforderungen (Art. 12-14).',
     privacyNote:
@@ -409,7 +407,7 @@ function Nav({ t, lang, setLang }) {
             <button onClick={() => setLang('de')} className={lang === 'de' ? 'text-blue-700 underline underline-offset-4' : 'text-slate-500'}>DE</button>
           </div>
         </div>
-        <button className="md:hidden" onClick={() => setOpen((v) => !v)}>{open ? <X /> : <Menu />}</button>
+        <button className="md:hidden" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>{open ? <X /> : <Menu />}</button>
       </div>
       {open && (
         <div className="md:hidden px-4 pb-4">
@@ -427,6 +425,13 @@ function Nav({ t, lang, setLang }) {
         </div>
       )}
     </nav>
+  );
+}
+
+/** Renders **double-asterisk** segments of a copy string as <strong>. */
+function renderBold(text) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 ? <strong key={i} className="font-semibold text-slate-900">{part}</strong> : part,
   );
 }
 
@@ -591,8 +596,15 @@ function HomePage({ t }) {
             animate="visible"
             variants={heroContainerVariants}
           >
-            <Motion.h1 variants={heroItemVariants} className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 leading-tight mb-6 break-words">{t.heroTitle} <span className="shimmer-text">{t.heroAccent}</span></Motion.h1>
-            <Motion.p variants={heroItemVariants} className="text-xl text-slate-700 mb-10">{t.heroText}</Motion.p>
+            <Motion.h1 variants={heroItemVariants} className="text-[2.1rem] sm:text-5xl lg:text-6xl font-black text-slate-900 leading-tight mb-5 break-words">
+              {(() => {
+                const [role, focus] = t.heroTitle.split(' | ');
+                return focus ? <>{role}<span className="hidden sm:inline"> | </span> <span className="block sm:inline">{focus}</span></> : role;
+              })()}
+            </Motion.h1>
+            <Motion.p variants={heroItemVariants} className="shimmer-text font-display font-bold text-xl sm:text-2xl lg:text-3xl !leading-snug mb-6">{t.heroAccent}</Motion.p>
+            <Motion.p variants={heroItemVariants} className="text-base sm:text-lg text-slate-700 mb-4">{renderBold(t.heroText)}</Motion.p>
+            <Motion.p variants={heroItemVariants} className="text-base sm:text-lg text-slate-700 mb-8 sm:mb-10">{t.basedIn}.</Motion.p>
             <Motion.div variants={heroItemVariants} className="flex gap-4 flex-wrap">
               <button onClick={() => navigate('/projects')} className="px-8 py-4 bg-white text-slate-900 font-bold rounded flex items-center">{t.viewProjects} <Icon icon={ArrowRight} className="ml-2 text-slate-900" /></button>
               <button onClick={() => navigate('/contact')} className="px-8 py-4 border border-slate-200 bg-white text-slate-900 font-bold rounded">{t.getInTouch}</button>
@@ -1049,7 +1061,7 @@ function ImpactCTA({ t, variant }) {
   return (
     <section className="py-8 px-4">
       <div className="max-w-6xl mx-auto px-4">
-        <Reveal className="relative bg-gradient-to-br from-brown via-brown-deep to-brown rounded-[2.5rem] p-12 md:p-24 text-center overflow-hidden border border-white/10 shadow-2xl">
+        <Reveal className="relative bg-gradient-to-br from-brown via-brown-deep to-brown rounded-[2rem] md:rounded-[2.5rem] px-6 py-12 md:p-24 text-center overflow-hidden border border-white/10 shadow-2xl">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-gold/20 blur-[120px] rounded-full pointer-events-none" />
           <div className="relative z-10 max-w-3xl mx-auto">
@@ -1061,7 +1073,7 @@ function ImpactCTA({ t, variant }) {
               {t.ctaStatus}
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight tracking-tight">{variant.title}</h2>
-            <p className="text-lg text-slate-400 mb-12 leading-relaxed">{variant.text}</p>
+            <p className="text-base md:text-lg text-slate-300 mb-10 md:mb-12 leading-relaxed">{variant.text}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a href="#/contact" className="group relative px-8 py-4 bg-white text-slate-900 font-bold text-sm rounded-xl hover:bg-cream-2 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] flex items-center gap-3">
                 <Mail size={18} className="text-terracotta-2" />
@@ -1115,15 +1127,14 @@ function Footer({ t }) {
           <Link to="/" className="hover:text-black transition">{t.homeLabel}</Link>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto px-4 mt-3 text-[11px] text-slate-700 text-center">{t.footerLegalNote}</div>
     </footer>
   );
 }
 
 function CookieBanner({ t, onChoice }) {
   return (
-    <div className="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-2xl">
-      <div className="bg-white/90 backdrop-blur-xl border border-white rounded-2xl shadow-2xl p-4 md:p-5">
+    <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl">
+      <div className="bg-white/90 backdrop-blur-xl border border-white rounded-2xl shadow-2xl p-3.5 md:p-5">
         <p className="text-sm font-bold text-slate-900 mb-1">{t.cookieBannerTitle}</p>
         <p className="text-xs text-slate-600 mb-3">{t.cookieBannerText}</p>
         <div className="flex flex-wrap items-center gap-3">
@@ -1133,25 +1144,11 @@ function CookieBanner({ t, onChoice }) {
           <button onClick={() => onChoice('declined')} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold">
             {t.cookieDecline}
           </button>
-          <Link to="/privacy" className="text-xs font-bold text-blue-700 hover:underline">{t.privacyPolicy}</Link>
-          <Link to="/cookies" className="text-xs font-bold text-blue-700 hover:underline">{t.cookiePolicy}</Link>
+          <span className="flex items-center gap-3">
+            <Link to="/privacy" className="text-xs font-bold text-blue-700 hover:underline">{t.privacyPolicy}</Link>
+            <Link to="/cookies" className="text-xs font-bold text-blue-700 hover:underline">{t.cookiePolicy}</Link>
+          </span>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function MobileQuickNav({ t }) {
-  const projectsLabel = t.nav.find((i) => i.path === '/projects')?.label ?? 'Projects';
-  const contactLabel = t.nav.find((i) => i.path === '/contact')?.label ?? 'Contact';
-  return (
-    <div className="md:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-full px-4 py-2">
-      <div className="flex items-center gap-4 text-xs font-black uppercase tracking-widest">
-        <a href="#/" className="text-white">{t.homeLabel}</a>
-        <span className="text-slate-500">|</span>
-        <a href="#/projects" className="text-slate-300">{projectsLabel}</a>
-        <span className="text-slate-500">|</span>
-        <a href="#/contact" className="text-slate-300">{contactLabel}</a>
       </div>
     </div>
   );
@@ -1205,7 +1202,6 @@ function AppShell() {
         <Route path="*" element={<HomePage t={t} />} />
       </Routes>
       {showCookieBanner && <CookieBanner t={t} onChoice={handleCookieChoice} />}
-      <MobileQuickNav t={t} />
       <ImpactCTA t={t} variant={ctaVariant} />
       <Footer t={t} />
     </div>
